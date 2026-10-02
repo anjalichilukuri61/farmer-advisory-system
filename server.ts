@@ -68,30 +68,49 @@ async function startServer() {
   await db.init();
   console.log('[AgriWise DB] Relational store initialized and seeded.');
 
-  // Full-Stack Dev vs. Production static serving
-  if (config.isProduction) {
-    const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(distPath, 'index.html'));
+  // When running inside Vercel, we don't start the listener or Vite
+  if (!process.env.VERCEL) {
+    if (config.isProduction) {
+      const distPath = path.resolve(__dirname, 'dist');
+      app.use(express.static(distPath));
+      app.get('*', (req, res) => {
+        res.sendFile(path.resolve(distPath, 'index.html'));
+      });
+    } else {
+      // In dev: mount Vite dev middleware
+      const { createServer: createViteServer } = await import('vite');
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: 'spa',
+      });
+      app.use(vite.middlewares);
+    }
+
+    app.listen(config.port, '0.0.0.0', () => {
+      console.log(`[AgriWise Engine] Running at http://localhost:${config.port}`);
+      console.log(`[AgriWise Engine] Environment: ${config.nodeEnv}`);
     });
-  } else {
-    // In dev: mount Vite dev middleware
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
   }
 
-  app.listen(config.port, '0.0.0.0', () => {
-    console.log(`[AgriWise Engine] Running at http://localhost:${config.port}`);
-    console.log(`[AgriWise Engine] Environment: ${config.nodeEnv}`);
-  });
+  return app;
 }
 
-startServer().catch(err => {
-  console.error('[AgriWise] Failed to start server:', err);
-  process.exit(1);
-});
+// Global instance for Serverless execution
+let appPromise: Promise<express.Express> | null = null;
+
+// Export for Vercel Serverless Functions
+export default async function (req: any, res: any) {
+  if (!appPromise) {
+    appPromise = startServer();
+  }
+  const app = await appPromise;
+  return app(req, res);
+}
+
+// Start locally if not in Vercel
+if (!process.env.VERCEL) {
+  startServer().catch(err => {
+    console.error('[AgriWise] Failed to start server:', err);
+    process.exit(1);
+  });
+}

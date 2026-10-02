@@ -69,16 +69,19 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
       reader.onload = async () => {
         const base64Data = reader.result as string;
         try {
+          console.log('[SoilReportModal] Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
           const res = await api.extractSoilReport({
             file_data: base64Data,
             file_name: file.name,
             mime_type: file.type,
             farm_id: farm?.id,
           });
+          console.log('[SoilReportModal] Extraction result:', res);
 
           populateExtracted(res.extractionResult, res.reportId, file.name);
           setStep('REVIEW');
         } catch (err: any) {
+          console.error('[SoilReportModal] Extraction error:', err);
           setError(err.message || 'Failed to extract soil parameters.');
           setStep('UPLOAD');
         } finally {
@@ -86,12 +89,14 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
         }
       };
       reader.onerror = () => {
+        console.error('[SoilReportModal] File reader error');
         setError('Error reading file.');
         setStep('UPLOAD');
         setLoading(false);
       };
       reader.readAsDataURL(file);
     } catch (err: any) {
+      console.error('[SoilReportModal] Upload error:', err);
       setError(err.message || 'Failed to upload report.');
       setStep('UPLOAD');
       setLoading(false);
