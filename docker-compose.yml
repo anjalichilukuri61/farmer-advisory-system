@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agriwise_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://agriwise_user:agriwise_secure_pass_2026@postgres:5432/agriwise_db
+      - JWT_SECRET=agriwise_production_secret_key_change_in_real_deployment
+      - WEATHER_API_KEY=
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: agriwise_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: agriwise_db
+      POSTGRES_USER: agriwise_user
+      POSTGRES_PASSWORD: agriwise_secure_pass_2026
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seeds.sql:/docker-entrypoint-initdb.d/02_seeds.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agriwise_user -d agriwise_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

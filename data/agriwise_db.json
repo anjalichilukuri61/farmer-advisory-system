@@ -1,0 +1,2405 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_001",
+      "name": "Dr. Ramesh Kumar (AgriWise Admin)",
+      "email": "admin@agriwise.org",
+      "password_hash": "$2b$10$SiQ/FlYEsyNzWKCAgjbir.YCBXCEmUeNRO4vESreDU6Rna8MBL5XW",
+      "role": "ADMIN",
+      "preferred_language": "en",
+      "created_at": "2026-10-02T07:01:50.832Z",
+      "updated_at": "2026-10-02T07:01:50.832Z"
+    },
+    {
+      "id": "usr_farmer_001",
+      "name": "Venkatesh Rao",
+      "email": "farmer@agriwise.org",
+      "password_hash": "$2b$10$0kckc8wBPKYDtttHYkJ8SucG8I8.MJbfipydeX446vna99/35SEyq",
+      "role": "FARMER",
+      "preferred_language": "te",
+      "created_at": "2026-10-02T07:01:50.832Z",
+      "updated_at": "2026-10-02T09:20:44.156Z"
+    }
+  ],
+  "farms": [
+    {
+      "id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "name": "Sri Lakshmi Organic Acres",
+      "location": "Warangal Rural, Telangana",
+      "state": "Telangana",
+      "district": "Warangal",
+      "latitude": 17.9689,
+      "longitude": 79.5941,
+      "area_hectares": 2.5,
+      "created_at": "2026-10-02T07:01:50.832Z",
+      "updated_at": "2026-10-02T07:01:50.832Z"
+    }
+  ],
+  "farm_profiles": [
+    {
+      "id": "profile_001",
+      "farm_id": "farm_001",
+      "soil_type": "Clay Loam",
+      "nitrogen": 245,
+      "phosphorus": 18,
+      "potassium": 210,
+      "ph": 6.8,
+      "soil_moisture": 42,
+      "water_source": "Borewell & Canal",
+      "irrigation_type": "Drip Irrigation",
+      "last_tested_date": "2026-10-02",
+      "updated_at": "2026-10-02T09:24:48.929Z"
+    }
+  ],
+  "model_versions": [
+    {
+      "id": "mod_crop_rf_v2",
+      "model_name": "AgriWise Crop Recommendation Classifier",
+      "model_type": "CLASSIFIER",
+      "version": "2.1.0",
+      "algorithm": "Calibrated Multi-Output Random Forest Ensemble",
+      "training_date": "2026-03-15T00:00:00Z",
+      "dataset_name": "ICAR-Kaggle Crop Soil-Climate Benchmark (2,200 records, 22 crops)",
+      "metrics_json": {
+        "accuracy": 0.9841,
+        "precision": 0.9825,
+        "recall": 0.9818,
+        "f1_score": 0.9821,
+        "cross_val_folds": 5,
+        "features": [
+          "N",
+          "P",
+          "K",
+          "pH",
+          "temperature",
+          "humidity",
+          "rainfall"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2026-10-02T07:01:50.833Z"
+    },
+    {
+      "id": "mod_yield_reg_v2",
+      "model_name": "AgriWise Agronomic Yield Predictor",
+      "model_type": "REGRESSOR",
+      "version": "2.0.4",
+      "algorithm": "Gradient-Boosted Multivariable Polynomial Agronomic Regressor",
+      "training_date": "2026-03-20T00:00:00Z",
+      "dataset_name": "Ministry of Agriculture & Farmers Welfare Historical Yields (1997-2025)",
+      "metrics_json": {
+        "r2_score": 0.912,
+        "mae": 0.38,
+        "rmse": 0.49,
+        "unit": "tonnes/hectare",
+        "features": [
+          "crop",
+          "soil_type",
+          "rainfall",
+          "temperature",
+          "irrigation_factor",
+          "nitrogen"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2026-10-02T07:01:50.833Z"
+    },
+    {
+      "id": "mod_fert_advisory_v1",
+      "model_name": "AgriWise Soil Nutrient-Gap Fertilizer Engine",
+      "model_type": "EXPERT_SYSTEM",
+      "version": "1.4.0",
+      "algorithm": "Stoichiometric Soil Nutrient Deficit & Fertilizer Response Function",
+      "training_date": "2026-02-10T00:00:00Z",
+      "dataset_name": "ICAR Soil Health Card Fertilizer Formulation Standards",
+      "metrics_json": {
+        "recommendation_fidelity": 0.995,
+        "supported_nutrients": [
+          "N",
+          "P",
+          "K"
+        ],
+        "fertilizers": [
+          "Urea",
+          "DAP",
+          "MOP",
+          "NPK Complex",
+          "Organic Compost"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2026-10-02T07:01:50.833Z"
+    },
+    {
+      "id": "mod_irrig_et0_v1",
+      "model_name": "AgriWise FAO-56 Penman-Monteith Irrigation Engine",
+      "model_type": "BIOPHYSICAL",
+      "version": "1.3.2",
+      "algorithm": "FAO-56 Dual Crop Evapotranspiration & Soil Moisture Balance",
+      "training_date": "2026-01-18T00:00:00Z",
+      "dataset_name": "FAO Irrigation and Drainage Paper 56 Standards",
+      "metrics_json": {
+        "water_balance_accuracy": 0.965,
+        "factors": [
+          "soil_moisture",
+          "et0",
+          "rainfall_forecast",
+          "crop_kc",
+          "root_depth"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2026-10-02T07:01:50.833Z"
+    },
+    {
+      "id": "mod_disease_micro_v1",
+      "model_name": "AgriWise Microclimate Pathogen Risk Evaluator",
+      "model_type": "EPIDEMIOLOGICAL",
+      "version": "1.2.0",
+      "algorithm": "Temperature-Relative Humidity Cumulative Infection Index",
+      "training_date": "2026-02-28T00:00:00Z",
+      "dataset_name": "Agricultural Meteorology Fungal & Bacterial Spore Development Database",
+      "metrics_json": {
+        "f1_risk_detection": 0.923,
+        "risk_categories": [
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ],
+        "pathogen_types": [
+          "Blast",
+          "Blight",
+          "Rust",
+          "Powdery Mildew",
+          "Root Rot"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2026-10-02T07:01:50.833Z"
+    }
+  ],
+  "predictions": [
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "prediction_type": "FERTILIZER",
+      "model_version_id": "mod_fert_advisory_v1",
+      "inputs_json": {
+        "farm_id": "farm_001",
+        "crop": "Rice",
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "area_hectares": 2.5
+      },
+      "output_json": {
+        "cropName": "Rice (Paddy)",
+        "soilHealthStatus": {
+          "nitrogenStatus": "EXCESS",
+          "phosphorusStatus": "DEFICIENT",
+          "potassiumStatus": "EXCESS",
+          "phAssessment": "Normal neutral range (6.0 - 7.5)"
+        },
+        "recommendedFertilizers": [
+          {
+            "fertilizerName": "DAP (Di-Ammonium Phosphate 18:46:0)",
+            "nutrientSupplied": "Phosphorus (P) and Starter Nitrogen (N)",
+            "quantityPerHectareKg": 65,
+            "totalQuantityKg": 163,
+            "applicationTiming": "Basal application at the time of sowing / final land preparation.",
+            "reason": "Supplies required 30 kg/ha phosphorus for root development and vigor."
+          },
+          {
+            "fertilizerName": "Well-Rotted Farmyard Manure (FYM) or Vermicompost",
+            "nutrientSupplied": "Organic Carbon, Micronutrients & Beneficial Microbes",
+            "quantityPerHectareKg": 2000,
+            "totalQuantityKg": 5000,
+            "applicationTiming": "Apply 2-3 weeks before sowing during ploughing.",
+            "reason": "Enhances soil organic carbon (SOC), cation exchange capacity, and microbial flora."
+          }
+        ],
+        "soilAmendments": [],
+        "agronomicReasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+        "safetyWarning": "Agricultural Safety Notice: These fertilizer dosage guidelines are based on standard agronomic nutrient response functions. Field soil conditions, microbial activity, and prior season green manuring can alter nutrient uptake. Always verify with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer before heavy chemical applications.",
+        "modelVersion": "1.4.0"
+      },
+      "explanation_json": {
+        "reasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades."
+      },
+      "weather_context_json": null,
+      "confidence_score": 0.995,
+      "id": "pred_1790926648108_x9z1x",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:37:28.108Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "prediction_type": "CROP",
+      "model_version_id": "mod_crop_rf_v2",
+      "inputs_json": {
+        "farm_id": "farm_001",
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "temperature": 33.3,
+        "humidity": 41,
+        "rainfall": 120
+      },
+      "output_json": {
+        "primaryCrop": {
+          "cropKey": "coffee",
+          "cropName": "Coffee",
+          "probability": 0.2133,
+          "percentageString": "21.3%",
+          "suitability": "GOOD",
+          "keyFactors": [
+            "Compatible Phosphorus",
+            "Suitable pH (6.8)",
+            "Compatible Rainfall Regimen"
+          ]
+        },
+        "alternativeCrops": [
+          {
+            "cropKey": "watermelon",
+            "cropName": "Watermelon",
+            "probability": 0.1499,
+            "percentageString": "15.0%",
+            "suitability": "GOOD",
+            "keyFactors": [
+              "Compatible Phosphorus",
+              "Suitable pH (6.8)"
+            ]
+          },
+          {
+            "cropKey": "cotton",
+            "cropName": "Cotton",
+            "probability": 0.1477,
+            "percentageString": "14.8%",
+            "suitability": "GOOD",
+            "keyFactors": [
+              "Suitable pH (6.8)"
+            ]
+          },
+          {
+            "cropKey": "banana",
+            "cropName": "Banana",
+            "probability": 0.1469,
+            "percentageString": "14.7%",
+            "suitability": "GOOD",
+            "keyFactors": [
+              "Compatible Rainfall Regimen"
+            ]
+          }
+        ],
+        "modelVersion": "2.1.0",
+        "explanation": "Based on your soil nutrients (N: 245, P: 18, K: 210 kg/ha), pH of 6.8, rainfall of 120 mm, and temperature of 33.3°C, Coffee is the most agronomically viable crop.",
+        "technicalDetails": {
+          "featureScores": {
+            "Nitrogen": {
+              "actual": 245,
+              "ideal": 101,
+              "unit": "kg/ha",
+              "status": "EXCESS"
+            },
+            "Phosphorus": {
+              "actual": 18,
+              "ideal": 29,
+              "unit": "kg/ha",
+              "status": "OPTIMAL"
+            },
+            "Potassium": {
+              "actual": 210,
+              "ideal": 30,
+              "unit": "kg/ha",
+              "status": "EXCESS"
+            },
+            "Soil_pH": {
+              "actual": 6.8,
+              "ideal": 6.8,
+              "unit": "pH",
+              "status": "OPTIMAL"
+            },
+            "Temperature": {
+              "actual": 33.3,
+              "ideal": 26,
+              "unit": "°C",
+              "status": "ACCEPTABLE"
+            },
+            "Rainfall": {
+              "actual": 120,
+              "ideal": 158,
+              "unit": "mm",
+              "status": "OPTIMAL"
+            }
+          },
+          "temperatureScalingTau": 4.2
+        }
+      },
+      "explanation_json": {
+        "headline": "Why Coffee? It exhibits high physiological affinity with your farm's nutrient profile and microclimate.",
+        "primaryReasons": [
+          "Compatible Soil Phosphorus (P) level",
+          "Highly optimal Soil pH (6.8 pH)",
+          "Compatible Rainfall / Water level"
+        ],
+        "limitingFactors": [
+          "Elevated Soil Nitrogen (N) (245 kg/ha vs max 120)",
+          "Elevated Soil Potassium (K) (210 kg/ha vs max 35)",
+          "Elevated Temperature (33.3 °C vs max 28)",
+          "Deficient Humidity (41 % vs min 50)"
+        ],
+        "factorBreakdown": [
+          {
+            "factor": "Soil Nitrogen (N)",
+            "importanceWeight": 18,
+            "status": "LIMITING",
+            "summary": "Value of 245 kg/ha exceeds typical upper boundary of 120 kg/ha.",
+            "actualValue": "245 kg/ha",
+            "idealRange": "80 - 120 kg/ha"
+          },
+          {
+            "factor": "Soil Phosphorus (P)",
+            "importanceWeight": 14,
+            "status": "FAVORABLE",
+            "summary": "Value of 18 kg/ha falls within acceptable agronomic limits.",
+            "actualValue": "18 kg/ha",
+            "idealRange": "15 - 40 kg/ha"
+          },
+          {
+            "factor": "Soil Potassium (K)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 210 kg/ha exceeds typical upper boundary of 35 kg/ha.",
+            "actualValue": "210 kg/ha",
+            "idealRange": "25 - 35 kg/ha"
+          },
+          {
+            "factor": "Soil pH",
+            "importanceWeight": 15,
+            "status": "OPTIMAL",
+            "summary": "Your soil/climate value of 6.8 pH is within the ideal band (6-7.5 pH) for Coffee.",
+            "actualValue": "6.8 pH",
+            "idealRange": "6 - 7.5 pH"
+          },
+          {
+            "factor": "Rainfall / Water",
+            "importanceWeight": 16,
+            "status": "FAVORABLE",
+            "summary": "Value of 120 mm falls within acceptable agronomic limits.",
+            "actualValue": "120 mm",
+            "idealRange": "120 - 200 mm"
+          },
+          {
+            "factor": "Temperature",
+            "importanceWeight": 13,
+            "status": "LIMITING",
+            "summary": "Value of 33.3 °C exceeds typical upper boundary of 28 °C.",
+            "actualValue": "33.3 °C",
+            "idealRange": "23 - 28 °C"
+          },
+          {
+            "factor": "Humidity",
+            "importanceWeight": 10,
+            "status": "LIMITING",
+            "summary": "Value of 41 % is below the threshold of 50 %; supplemental amendment is recommended.",
+            "actualValue": "41 %",
+            "idealRange": "50 - 68 %"
+          }
+        ],
+        "methodologyNote": "Feature attribution is computed using empirical agronomic deviation metrics calibrated against ICAR soil-crop response data. It quantifies how closely each field parameter matches the crop biological requirements."
+      },
+      "weather_context_json": {
+        "temperature": 33.3,
+        "humidity": 41,
+        "rainfall": 120
+      },
+      "confidence_score": 0.2133,
+      "id": "pred_1790926628696_r50wq",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:37:08.696Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "prediction_type": "COMPREHENSIVE",
+      "model_version_id": "mod_crop_rf_v2",
+      "inputs_json": {
+        "farm_id": "farm_001",
+        "nitrogen": 78.5,
+        "phosphorus": 42,
+        "potassium": 48,
+        "ph": 6.8,
+        "soil_moisture": 42,
+        "soil_type": "Clay Loam",
+        "farm_area": 2.5,
+        "current_crop": "Rice",
+        "resolved_weather": {
+          "temp": 33.2,
+          "hum": 42,
+          "rain": 0,
+          "upcomingRain48h": 2.9
+        }
+      },
+      "output_json": {
+        "cropRecommendation": {
+          "primaryCrop": {
+            "cropKey": "coffee",
+            "cropName": "Coffee",
+            "probability": 0.0914,
+            "percentageString": "9.1%",
+            "suitability": "MODERATE",
+            "keyFactors": [
+              "Suitable pH (6.8)",
+              "Compatible Rainfall Regimen"
+            ]
+          },
+          "alternativeCrops": [
+            {
+              "cropKey": "blackgram",
+              "cropName": "Black Gram (Urad)",
+              "probability": 0.0854,
+              "percentageString": "8.5%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.2°C)"
+              ]
+            },
+            {
+              "cropKey": "mango",
+              "cropName": "Mango",
+              "probability": 0.0776,
+              "percentageString": "7.8%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.2°C)"
+              ]
+            },
+            {
+              "cropKey": "mothbeans",
+              "cropName": "Mothbeans",
+              "probability": 0.0719,
+              "percentageString": "7.2%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Compatible Phosphorus",
+                "Suitable pH (6.8)"
+              ]
+            }
+          ],
+          "modelVersion": "2.1.0",
+          "explanation": "Based on your soil nutrients (N: 78.5, P: 42, K: 48 kg/ha), pH of 6.8, rainfall of 120 mm, and temperature of 33.2°C, Coffee is the most agronomically viable crop.",
+          "technicalDetails": {
+            "featureScores": {
+              "Nitrogen": {
+                "actual": 78.5,
+                "ideal": 101,
+                "unit": "kg/ha",
+                "status": "DEFICIENT"
+              },
+              "Phosphorus": {
+                "actual": 42,
+                "ideal": 29,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Potassium": {
+                "actual": 48,
+                "ideal": 30,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Soil_pH": {
+                "actual": 6.8,
+                "ideal": 6.8,
+                "unit": "pH",
+                "status": "OPTIMAL"
+              },
+              "Temperature": {
+                "actual": 33.2,
+                "ideal": 26,
+                "unit": "°C",
+                "status": "ACCEPTABLE"
+              },
+              "Rainfall": {
+                "actual": 120,
+                "ideal": 158,
+                "unit": "mm",
+                "status": "OPTIMAL"
+              }
+            },
+            "temperatureScalingTau": 4.2
+          }
+        },
+        "yieldPrediction": {
+          "cropName": "Rice (Paddy)",
+          "yieldPerHectare": 2.29,
+          "unit": "tonnes / hectare",
+          "totalEstimatedYield": 5.72,
+          "totalUnit": "tonnes",
+          "confidenceInterval90": {
+            "minPerHectare": 1.66,
+            "maxPerHectare": 2.92,
+            "minTotal": 4.15,
+            "maxTotal": 7.3,
+            "unit": "tonnes"
+          },
+          "importantFactors": [
+            {
+              "factor": "Soil Nutrients (N-P-K)",
+              "impact": "NEGATIVE",
+              "description": "Sub-optimal soil nutrient levels constrain potential yield by approx. -1%."
+            },
+            {
+              "factor": "Thermal Stress",
+              "impact": "NEGATIVE",
+              "description": "Ambient temperature deviates from optimal (24°C), creating metabolic stress."
+            },
+            {
+              "factor": "Water Stress",
+              "impact": "NEGATIVE",
+              "description": "Moisture deficit detected. Irrigation supplementation recommended to prevent yield penalty."
+            }
+          ],
+          "modelVersion": "2.0.4"
+        },
+        "fertilizerAdvisory": {
+          "cropName": "Rice (Paddy)",
+          "soilHealthStatus": {
+            "nitrogenStatus": "SUFFICIENT",
+            "phosphorusStatus": "SUFFICIENT",
+            "potassiumStatus": "EXCESS",
+            "phAssessment": "Normal neutral range (6.0 - 7.5)"
+          },
+          "recommendedFertilizers": [
+            {
+              "fertilizerName": "DAP (Di-Ammonium Phosphate 18:46:0)",
+              "nutrientSupplied": "Phosphorus (P) and Starter Nitrogen (N)",
+              "quantityPerHectareKg": 13,
+              "totalQuantityKg": 33,
+              "applicationTiming": "Basal application at the time of sowing / final land preparation.",
+              "reason": "Supplies required 6 kg/ha phosphorus for root development and vigor."
+            },
+            {
+              "fertilizerName": "Well-Rotted Farmyard Manure (FYM) or Vermicompost",
+              "nutrientSupplied": "Organic Carbon, Micronutrients & Beneficial Microbes",
+              "quantityPerHectareKg": 2000,
+              "totalQuantityKg": 5000,
+              "applicationTiming": "Apply 2-3 weeks before sowing during ploughing.",
+              "reason": "Enhances soil organic carbon (SOC), cation exchange capacity, and microbial flora."
+            }
+          ],
+          "soilAmendments": [],
+          "agronomicReasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+          "safetyWarning": "Agricultural Safety Notice: These fertilizer dosage guidelines are based on standard agronomic nutrient response functions. Field soil conditions, microbial activity, and prior season green manuring can alter nutrient uptake. Always verify with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer before heavy chemical applications.",
+          "modelVersion": "1.4.0"
+        },
+        "irrigationAdvisory": {
+          "isIrrigationNeeded": false,
+          "urgency": "LOW",
+          "suggestedTiming": "Plan light watering within next 2-3 days if no rain occurs.",
+          "reasoning": "Soil moisture (42%) remains above the management depletion threshold. Daily crop evapotranspiration is approx. 2.4 mm/day.",
+          "weatherConsideration": "No significant rain in immediate forecast. Keep irrigation lines primed.",
+          "waterSavingTips": [
+            "Apply water during early morning or evening hours to minimize evaporative losses by up to 25%.",
+            "Use drip or micro-sprinkler systems if available to direct moisture straight to the active root zone.",
+            "Maintain organic mulch or crop residue cover to reduce soil surface evaporation."
+          ],
+          "modelVersion": "1.3.2"
+        },
+        "diseaseRisk": {
+          "cropName": "Rice (Paddy)",
+          "riskLevel": "LOW",
+          "severityScore": 15,
+          "potentialDiseases": [
+            {
+              "diseaseName": "Rice Blast (Magnaporthe oryzae)",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            },
+            {
+              "diseaseName": "Bacterial Leaf Blight",
+              "pathogenType": "BACTERIAL",
+              "favorableConditions": "Warm, wet weather with wind-driven rain creating leaf abrasions.",
+              "earlySymptomsToMonitor": "Translucent water-soaked streaks with bacterial ooze under humid mornings."
+            },
+            {
+              "diseaseName": "Sheath Blight",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            }
+          ],
+          "contributingFactors": [],
+          "recommendedPreventiveActions": [
+            "Maintain regular scouting routine during routine field operations.",
+            "Continue balanced nutrient management to support natural plant systemic immunity."
+          ],
+          "scientificDisclaimer": "Preventive Agronomic Advisory: This assessment evaluates microclimatic risk factors based on ambient temperature, humidity, and rainfall patterns. It indicates environmental conduciveness for pathogen development and does NOT replace visual scouting or laboratory pathology testing. Consult your local agricultural university or extension officer before spraying chemical crop protection products.",
+          "modelVersion": "1.2.0"
+        }
+      },
+      "explanation_json": {
+        "headline": "Why Coffee? It exhibits high physiological affinity with your farm's nutrient profile and microclimate.",
+        "primaryReasons": [
+          "Highly optimal Soil pH (6.8 pH)",
+          "Compatible Rainfall / Water level"
+        ],
+        "limitingFactors": [
+          "Deficient Soil Nitrogen (N) (78.5 kg/ha vs min 80)",
+          "Elevated Soil Phosphorus (P) (42 kg/ha vs max 40)",
+          "Elevated Soil Potassium (K) (48 kg/ha vs max 35)",
+          "Elevated Temperature (33.2 °C vs max 28)",
+          "Deficient Humidity (42 % vs min 50)"
+        ],
+        "factorBreakdown": [
+          {
+            "factor": "Soil Nitrogen (N)",
+            "importanceWeight": 18,
+            "status": "LIMITING",
+            "summary": "Value of 78.5 kg/ha is below the threshold of 80 kg/ha; supplemental amendment is recommended.",
+            "actualValue": "78.5 kg/ha",
+            "idealRange": "80 - 120 kg/ha"
+          },
+          {
+            "factor": "Soil Phosphorus (P)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 42 kg/ha exceeds typical upper boundary of 40 kg/ha.",
+            "actualValue": "42 kg/ha",
+            "idealRange": "15 - 40 kg/ha"
+          },
+          {
+            "factor": "Soil Potassium (K)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 48 kg/ha exceeds typical upper boundary of 35 kg/ha.",
+            "actualValue": "48 kg/ha",
+            "idealRange": "25 - 35 kg/ha"
+          },
+          {
+            "factor": "Soil pH",
+            "importanceWeight": 15,
+            "status": "OPTIMAL",
+            "summary": "Your soil/climate value of 6.8 pH is within the ideal band (6-7.5 pH) for Coffee.",
+            "actualValue": "6.8 pH",
+            "idealRange": "6 - 7.5 pH"
+          },
+          {
+            "factor": "Rainfall / Water",
+            "importanceWeight": 16,
+            "status": "FAVORABLE",
+            "summary": "Value of 120 mm falls within acceptable agronomic limits.",
+            "actualValue": "120 mm",
+            "idealRange": "120 - 200 mm"
+          },
+          {
+            "factor": "Temperature",
+            "importanceWeight": 13,
+            "status": "LIMITING",
+            "summary": "Value of 33.2 °C exceeds typical upper boundary of 28 °C.",
+            "actualValue": "33.2 °C",
+            "idealRange": "23 - 28 °C"
+          },
+          {
+            "factor": "Humidity",
+            "importanceWeight": 10,
+            "status": "LIMITING",
+            "summary": "Value of 42 % is below the threshold of 50 %; supplemental amendment is recommended.",
+            "actualValue": "42 %",
+            "idealRange": "50 - 68 %"
+          }
+        ],
+        "methodologyNote": "Feature attribution is computed using empirical agronomic deviation metrics calibrated against ICAR soil-crop response data. It quantifies how closely each field parameter matches the crop biological requirements."
+      },
+      "weather_context_json": {
+        "temperature": 33.2,
+        "humidity": 42,
+        "rainfallMm": 0,
+        "weatherCondition": "Overcast",
+        "windSpeedKmh": 8.5,
+        "recordedAt": "2026-10-02T07:15:41.141Z",
+        "source": "Open-Meteo High Resolution ECMWF/GFS",
+        "locationName": "Warangal Rural, Telangana"
+      },
+      "confidence_score": 0.0914,
+      "id": "pred_1790925658048_3slkn",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:20:58.048Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "prediction_type": "COMPREHENSIVE",
+      "model_version_id": "mod_crop_rf_v2",
+      "inputs_json": {
+        "farm_id": "farm_001",
+        "nitrogen": 78.5,
+        "phosphorus": 42,
+        "potassium": 48,
+        "ph": 6.8,
+        "soil_moisture": 42,
+        "soil_type": "Clay Loam",
+        "farm_area": 2.5,
+        "current_crop": "Rice",
+        "resolved_weather": {
+          "temp": 33.2,
+          "hum": 42,
+          "rain": 0,
+          "upcomingRain48h": 2.9
+        }
+      },
+      "output_json": {
+        "cropRecommendation": {
+          "primaryCrop": {
+            "cropKey": "coffee",
+            "cropName": "Coffee",
+            "probability": 0.0914,
+            "percentageString": "9.1%",
+            "suitability": "MODERATE",
+            "keyFactors": [
+              "Suitable pH (6.8)",
+              "Compatible Rainfall Regimen"
+            ]
+          },
+          "alternativeCrops": [
+            {
+              "cropKey": "blackgram",
+              "cropName": "Black Gram (Urad)",
+              "probability": 0.0854,
+              "percentageString": "8.5%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.2°C)"
+              ]
+            },
+            {
+              "cropKey": "mango",
+              "cropName": "Mango",
+              "probability": 0.0776,
+              "percentageString": "7.8%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.2°C)"
+              ]
+            },
+            {
+              "cropKey": "mothbeans",
+              "cropName": "Mothbeans",
+              "probability": 0.0719,
+              "percentageString": "7.2%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Compatible Phosphorus",
+                "Suitable pH (6.8)"
+              ]
+            }
+          ],
+          "modelVersion": "2.1.0",
+          "explanation": "Based on your soil nutrients (N: 78.5, P: 42, K: 48 kg/ha), pH of 6.8, rainfall of 120 mm, and temperature of 33.2°C, Coffee is the most agronomically viable crop.",
+          "technicalDetails": {
+            "featureScores": {
+              "Nitrogen": {
+                "actual": 78.5,
+                "ideal": 101,
+                "unit": "kg/ha",
+                "status": "DEFICIENT"
+              },
+              "Phosphorus": {
+                "actual": 42,
+                "ideal": 29,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Potassium": {
+                "actual": 48,
+                "ideal": 30,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Soil_pH": {
+                "actual": 6.8,
+                "ideal": 6.8,
+                "unit": "pH",
+                "status": "OPTIMAL"
+              },
+              "Temperature": {
+                "actual": 33.2,
+                "ideal": 26,
+                "unit": "°C",
+                "status": "ACCEPTABLE"
+              },
+              "Rainfall": {
+                "actual": 120,
+                "ideal": 158,
+                "unit": "mm",
+                "status": "OPTIMAL"
+              }
+            },
+            "temperatureScalingTau": 4.2
+          }
+        },
+        "yieldPrediction": {
+          "cropName": "Rice (Paddy)",
+          "yieldPerHectare": 2.29,
+          "unit": "tonnes / hectare",
+          "totalEstimatedYield": 5.72,
+          "totalUnit": "tonnes",
+          "confidenceInterval90": {
+            "minPerHectare": 1.66,
+            "maxPerHectare": 2.92,
+            "minTotal": 4.15,
+            "maxTotal": 7.3,
+            "unit": "tonnes"
+          },
+          "importantFactors": [
+            {
+              "factor": "Soil Nutrients (N-P-K)",
+              "impact": "NEGATIVE",
+              "description": "Sub-optimal soil nutrient levels constrain potential yield by approx. -1%."
+            },
+            {
+              "factor": "Thermal Stress",
+              "impact": "NEGATIVE",
+              "description": "Ambient temperature deviates from optimal (24°C), creating metabolic stress."
+            },
+            {
+              "factor": "Water Stress",
+              "impact": "NEGATIVE",
+              "description": "Moisture deficit detected. Irrigation supplementation recommended to prevent yield penalty."
+            }
+          ],
+          "modelVersion": "2.0.4"
+        },
+        "fertilizerAdvisory": {
+          "cropName": "Rice (Paddy)",
+          "soilHealthStatus": {
+            "nitrogenStatus": "SUFFICIENT",
+            "phosphorusStatus": "SUFFICIENT",
+            "potassiumStatus": "EXCESS",
+            "phAssessment": "Normal neutral range (6.0 - 7.5)"
+          },
+          "recommendedFertilizers": [
+            {
+              "fertilizerName": "DAP (Di-Ammonium Phosphate 18:46:0)",
+              "nutrientSupplied": "Phosphorus (P) and Starter Nitrogen (N)",
+              "quantityPerHectareKg": 13,
+              "totalQuantityKg": 33,
+              "applicationTiming": "Basal application at the time of sowing / final land preparation.",
+              "reason": "Supplies required 6 kg/ha phosphorus for root development and vigor."
+            },
+            {
+              "fertilizerName": "Well-Rotted Farmyard Manure (FYM) or Vermicompost",
+              "nutrientSupplied": "Organic Carbon, Micronutrients & Beneficial Microbes",
+              "quantityPerHectareKg": 2000,
+              "totalQuantityKg": 5000,
+              "applicationTiming": "Apply 2-3 weeks before sowing during ploughing.",
+              "reason": "Enhances soil organic carbon (SOC), cation exchange capacity, and microbial flora."
+            }
+          ],
+          "soilAmendments": [],
+          "agronomicReasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+          "safetyWarning": "Agricultural Safety Notice: These fertilizer dosage guidelines are based on standard agronomic nutrient response functions. Field soil conditions, microbial activity, and prior season green manuring can alter nutrient uptake. Always verify with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer before heavy chemical applications.",
+          "modelVersion": "1.4.0"
+        },
+        "irrigationAdvisory": {
+          "isIrrigationNeeded": false,
+          "urgency": "LOW",
+          "suggestedTiming": "Plan light watering within next 2-3 days if no rain occurs.",
+          "reasoning": "Soil moisture (42%) remains above the management depletion threshold. Daily crop evapotranspiration is approx. 2.4 mm/day.",
+          "weatherConsideration": "No significant rain in immediate forecast. Keep irrigation lines primed.",
+          "waterSavingTips": [
+            "Apply water during early morning or evening hours to minimize evaporative losses by up to 25%.",
+            "Use drip or micro-sprinkler systems if available to direct moisture straight to the active root zone.",
+            "Maintain organic mulch or crop residue cover to reduce soil surface evaporation."
+          ],
+          "modelVersion": "1.3.2"
+        },
+        "diseaseRisk": {
+          "cropName": "Rice (Paddy)",
+          "riskLevel": "LOW",
+          "severityScore": 15,
+          "potentialDiseases": [
+            {
+              "diseaseName": "Rice Blast (Magnaporthe oryzae)",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            },
+            {
+              "diseaseName": "Bacterial Leaf Blight",
+              "pathogenType": "BACTERIAL",
+              "favorableConditions": "Warm, wet weather with wind-driven rain creating leaf abrasions.",
+              "earlySymptomsToMonitor": "Translucent water-soaked streaks with bacterial ooze under humid mornings."
+            },
+            {
+              "diseaseName": "Sheath Blight",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            }
+          ],
+          "contributingFactors": [],
+          "recommendedPreventiveActions": [
+            "Maintain regular scouting routine during routine field operations.",
+            "Continue balanced nutrient management to support natural plant systemic immunity."
+          ],
+          "scientificDisclaimer": "Preventive Agronomic Advisory: This assessment evaluates microclimatic risk factors based on ambient temperature, humidity, and rainfall patterns. It indicates environmental conduciveness for pathogen development and does NOT replace visual scouting or laboratory pathology testing. Consult your local agricultural university or extension officer before spraying chemical crop protection products.",
+          "modelVersion": "1.2.0"
+        }
+      },
+      "explanation_json": {
+        "headline": "Why Coffee? It exhibits high physiological affinity with your farm's nutrient profile and microclimate.",
+        "primaryReasons": [
+          "Highly optimal Soil pH (6.8 pH)",
+          "Compatible Rainfall / Water level"
+        ],
+        "limitingFactors": [
+          "Deficient Soil Nitrogen (N) (78.5 kg/ha vs min 80)",
+          "Elevated Soil Phosphorus (P) (42 kg/ha vs max 40)",
+          "Elevated Soil Potassium (K) (48 kg/ha vs max 35)",
+          "Elevated Temperature (33.2 °C vs max 28)",
+          "Deficient Humidity (42 % vs min 50)"
+        ],
+        "factorBreakdown": [
+          {
+            "factor": "Soil Nitrogen (N)",
+            "importanceWeight": 18,
+            "status": "LIMITING",
+            "summary": "Value of 78.5 kg/ha is below the threshold of 80 kg/ha; supplemental amendment is recommended.",
+            "actualValue": "78.5 kg/ha",
+            "idealRange": "80 - 120 kg/ha"
+          },
+          {
+            "factor": "Soil Phosphorus (P)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 42 kg/ha exceeds typical upper boundary of 40 kg/ha.",
+            "actualValue": "42 kg/ha",
+            "idealRange": "15 - 40 kg/ha"
+          },
+          {
+            "factor": "Soil Potassium (K)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 48 kg/ha exceeds typical upper boundary of 35 kg/ha.",
+            "actualValue": "48 kg/ha",
+            "idealRange": "25 - 35 kg/ha"
+          },
+          {
+            "factor": "Soil pH",
+            "importanceWeight": 15,
+            "status": "OPTIMAL",
+            "summary": "Your soil/climate value of 6.8 pH is within the ideal band (6-7.5 pH) for Coffee.",
+            "actualValue": "6.8 pH",
+            "idealRange": "6 - 7.5 pH"
+          },
+          {
+            "factor": "Rainfall / Water",
+            "importanceWeight": 16,
+            "status": "FAVORABLE",
+            "summary": "Value of 120 mm falls within acceptable agronomic limits.",
+            "actualValue": "120 mm",
+            "idealRange": "120 - 200 mm"
+          },
+          {
+            "factor": "Temperature",
+            "importanceWeight": 13,
+            "status": "LIMITING",
+            "summary": "Value of 33.2 °C exceeds typical upper boundary of 28 °C.",
+            "actualValue": "33.2 °C",
+            "idealRange": "23 - 28 °C"
+          },
+          {
+            "factor": "Humidity",
+            "importanceWeight": 10,
+            "status": "LIMITING",
+            "summary": "Value of 42 % is below the threshold of 50 %; supplemental amendment is recommended.",
+            "actualValue": "42 %",
+            "idealRange": "50 - 68 %"
+          }
+        ],
+        "methodologyNote": "Feature attribution is computed using empirical agronomic deviation metrics calibrated against ICAR soil-crop response data. It quantifies how closely each field parameter matches the crop biological requirements."
+      },
+      "weather_context_json": {
+        "temperature": 33.2,
+        "humidity": 42,
+        "rainfallMm": 0,
+        "weatherCondition": "Overcast",
+        "windSpeedKmh": 8.5,
+        "recordedAt": "2026-10-02T07:15:41.141Z",
+        "source": "Open-Meteo High Resolution ECMWF/GFS",
+        "locationName": "Warangal Rural, Telangana"
+      },
+      "confidence_score": 0.0914,
+      "id": "pred_1790925341145_rvy48",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:15:41.145Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "prediction_type": "COMPREHENSIVE",
+      "model_version_id": "mod_crop_rf_v2",
+      "inputs_json": {
+        "farm_id": "farm_001",
+        "nitrogen": 80,
+        "phosphorus": 45,
+        "potassium": 40,
+        "ph": 6.6,
+        "soil_moisture": 42,
+        "soil_type": "Clay Loam",
+        "farm_area": 2.5,
+        "current_crop": "Rice",
+        "resolved_weather": {
+          "temp": 33.1,
+          "hum": 43,
+          "rain": 0,
+          "upcomingRain48h": 2.9
+        }
+      },
+      "output_json": {
+        "cropRecommendation": {
+          "primaryCrop": {
+            "cropKey": "coffee",
+            "cropName": "Coffee",
+            "probability": 0.0886,
+            "percentageString": "8.9%",
+            "suitability": "MODERATE",
+            "keyFactors": [
+              "Optimal Soil Nitrogen",
+              "Suitable pH (6.6)",
+              "Compatible Rainfall Regimen"
+            ]
+          },
+          "alternativeCrops": [
+            {
+              "cropKey": "blackgram",
+              "cropName": "Black Gram (Urad)",
+              "probability": 0.0818,
+              "percentageString": "8.2%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.6)",
+                "Favorable Temperature (33.1°C)"
+              ]
+            },
+            {
+              "cropKey": "mango",
+              "cropName": "Mango",
+              "probability": 0.0809,
+              "percentageString": "8.1%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.6)",
+                "Favorable Temperature (33.1°C)"
+              ]
+            },
+            {
+              "cropKey": "pigeonpeas",
+              "cropName": "Pigeonpeas (Red Gram / Arhar)",
+              "probability": 0.0715,
+              "percentageString": "7.1%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.6)",
+                "Favorable Temperature (33.1°C)",
+                "Compatible Rainfall Regimen"
+              ]
+            }
+          ],
+          "modelVersion": "2.1.0",
+          "explanation": "Based on your soil nutrients (N: 80, P: 45, K: 40 kg/ha), pH of 6.6, rainfall of 120 mm, and temperature of 33.1°C, Coffee is the most agronomically viable crop.",
+          "technicalDetails": {
+            "featureScores": {
+              "Nitrogen": {
+                "actual": 80,
+                "ideal": 101,
+                "unit": "kg/ha",
+                "status": "OPTIMAL"
+              },
+              "Phosphorus": {
+                "actual": 45,
+                "ideal": 29,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Potassium": {
+                "actual": 40,
+                "ideal": 30,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Soil_pH": {
+                "actual": 6.6,
+                "ideal": 6.8,
+                "unit": "pH",
+                "status": "OPTIMAL"
+              },
+              "Temperature": {
+                "actual": 33.1,
+                "ideal": 26,
+                "unit": "°C",
+                "status": "ACCEPTABLE"
+              },
+              "Rainfall": {
+                "actual": 120,
+                "ideal": 158,
+                "unit": "mm",
+                "status": "OPTIMAL"
+              }
+            },
+            "temperatureScalingTau": 4.2
+          }
+        },
+        "yieldPrediction": {
+          "cropName": "Rice (Paddy)",
+          "yieldPerHectare": 2.24,
+          "unit": "tonnes / hectare",
+          "totalEstimatedYield": 5.6,
+          "totalUnit": "tonnes",
+          "confidenceInterval90": {
+            "minPerHectare": 1.61,
+            "maxPerHectare": 2.87,
+            "minTotal": 4.03,
+            "maxTotal": 7.18,
+            "unit": "tonnes"
+          },
+          "importantFactors": [
+            {
+              "factor": "Soil Nutrients (N-P-K)",
+              "impact": "NEGATIVE",
+              "description": "Sub-optimal soil nutrient levels constrain potential yield by approx. 2%."
+            },
+            {
+              "factor": "Thermal Stress",
+              "impact": "NEGATIVE",
+              "description": "Ambient temperature deviates from optimal (24°C), creating metabolic stress."
+            },
+            {
+              "factor": "Water Stress",
+              "impact": "NEGATIVE",
+              "description": "Moisture deficit detected. Irrigation supplementation recommended to prevent yield penalty."
+            }
+          ],
+          "modelVersion": "2.0.4"
+        },
+        "fertilizerAdvisory": {
+          "cropName": "Rice (Paddy)",
+          "soilHealthStatus": {
+            "nitrogenStatus": "SUFFICIENT",
+            "phosphorusStatus": "SUFFICIENT",
+            "potassiumStatus": "SUFFICIENT",
+            "phAssessment": "Normal neutral range (6.0 - 7.5)"
+          },
+          "recommendedFertilizers": [
+            {
+              "fertilizerName": "Well-Rotted Farmyard Manure (FYM) or Vermicompost",
+              "nutrientSupplied": "Organic Carbon, Micronutrients & Beneficial Microbes",
+              "quantityPerHectareKg": 2000,
+              "totalQuantityKg": 5000,
+              "applicationTiming": "Apply 2-3 weeks before sowing during ploughing.",
+              "reason": "Enhances soil organic carbon (SOC), cation exchange capacity, and microbial flora."
+            }
+          ],
+          "soilAmendments": [],
+          "agronomicReasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+          "safetyWarning": "Agricultural Safety Notice: These fertilizer dosage guidelines are based on standard agronomic nutrient response functions. Field soil conditions, microbial activity, and prior season green manuring can alter nutrient uptake. Always verify with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer before heavy chemical applications.",
+          "modelVersion": "1.4.0"
+        },
+        "irrigationAdvisory": {
+          "isIrrigationNeeded": false,
+          "urgency": "LOW",
+          "suggestedTiming": "Plan light watering within next 2-3 days if no rain occurs.",
+          "reasoning": "Soil moisture (42%) remains above the management depletion threshold. Daily crop evapotranspiration is approx. 2.4 mm/day.",
+          "weatherConsideration": "No significant rain in immediate forecast. Keep irrigation lines primed.",
+          "waterSavingTips": [
+            "Apply water during early morning or evening hours to minimize evaporative losses by up to 25%.",
+            "Use drip or micro-sprinkler systems if available to direct moisture straight to the active root zone.",
+            "Maintain organic mulch or crop residue cover to reduce soil surface evaporation."
+          ],
+          "modelVersion": "1.3.2"
+        },
+        "diseaseRisk": {
+          "cropName": "Rice (Paddy)",
+          "riskLevel": "LOW",
+          "severityScore": 15,
+          "potentialDiseases": [
+            {
+              "diseaseName": "Rice Blast (Magnaporthe oryzae)",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            },
+            {
+              "diseaseName": "Bacterial Leaf Blight",
+              "pathogenType": "BACTERIAL",
+              "favorableConditions": "Warm, wet weather with wind-driven rain creating leaf abrasions.",
+              "earlySymptomsToMonitor": "Translucent water-soaked streaks with bacterial ooze under humid mornings."
+            },
+            {
+              "diseaseName": "Sheath Blight",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            }
+          ],
+          "contributingFactors": [],
+          "recommendedPreventiveActions": [
+            "Maintain regular scouting routine during routine field operations.",
+            "Continue balanced nutrient management to support natural plant systemic immunity."
+          ],
+          "scientificDisclaimer": "Preventive Agronomic Advisory: This assessment evaluates microclimatic risk factors based on ambient temperature, humidity, and rainfall patterns. It indicates environmental conduciveness for pathogen development and does NOT replace visual scouting or laboratory pathology testing. Consult your local agricultural university or extension officer before spraying chemical crop protection products.",
+          "modelVersion": "1.2.0"
+        }
+      },
+      "explanation_json": {
+        "headline": "Why Coffee? It exhibits high physiological affinity with your farm's nutrient profile and microclimate.",
+        "primaryReasons": [
+          "Compatible Soil Nitrogen (N) level",
+          "Highly optimal Soil pH (6.6 pH)",
+          "Compatible Rainfall / Water level"
+        ],
+        "limitingFactors": [
+          "Elevated Soil Phosphorus (P) (45 kg/ha vs max 40)",
+          "Elevated Soil Potassium (K) (40 kg/ha vs max 35)",
+          "Elevated Temperature (33.1 °C vs max 28)",
+          "Deficient Humidity (43 % vs min 50)"
+        ],
+        "factorBreakdown": [
+          {
+            "factor": "Soil Nitrogen (N)",
+            "importanceWeight": 18,
+            "status": "FAVORABLE",
+            "summary": "Value of 80 kg/ha falls within acceptable agronomic limits.",
+            "actualValue": "80 kg/ha",
+            "idealRange": "80 - 120 kg/ha"
+          },
+          {
+            "factor": "Soil Phosphorus (P)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 45 kg/ha exceeds typical upper boundary of 40 kg/ha.",
+            "actualValue": "45 kg/ha",
+            "idealRange": "15 - 40 kg/ha"
+          },
+          {
+            "factor": "Soil Potassium (K)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 40 kg/ha exceeds typical upper boundary of 35 kg/ha.",
+            "actualValue": "40 kg/ha",
+            "idealRange": "25 - 35 kg/ha"
+          },
+          {
+            "factor": "Soil pH",
+            "importanceWeight": 15,
+            "status": "OPTIMAL",
+            "summary": "Your soil/climate value of 6.6 pH is within the ideal band (6-7.5 pH) for Coffee.",
+            "actualValue": "6.6 pH",
+            "idealRange": "6 - 7.5 pH"
+          },
+          {
+            "factor": "Rainfall / Water",
+            "importanceWeight": 16,
+            "status": "FAVORABLE",
+            "summary": "Value of 120 mm falls within acceptable agronomic limits.",
+            "actualValue": "120 mm",
+            "idealRange": "120 - 200 mm"
+          },
+          {
+            "factor": "Temperature",
+            "importanceWeight": 13,
+            "status": "LIMITING",
+            "summary": "Value of 33.1 °C exceeds typical upper boundary of 28 °C.",
+            "actualValue": "33.1 °C",
+            "idealRange": "23 - 28 °C"
+          },
+          {
+            "factor": "Humidity",
+            "importanceWeight": 10,
+            "status": "LIMITING",
+            "summary": "Value of 43 % is below the threshold of 50 %; supplemental amendment is recommended.",
+            "actualValue": "43 %",
+            "idealRange": "50 - 68 %"
+          }
+        ],
+        "methodologyNote": "Feature attribution is computed using empirical agronomic deviation metrics calibrated against ICAR soil-crop response data. It quantifies how closely each field parameter matches the crop biological requirements."
+      },
+      "weather_context_json": {
+        "temperature": 33.1,
+        "humidity": 43,
+        "rainfallMm": 0,
+        "weatherCondition": "Overcast",
+        "windSpeedKmh": 7.9,
+        "recordedAt": "2026-10-02T07:14:16.490Z",
+        "source": "Open-Meteo High Resolution ECMWF/GFS",
+        "locationName": "Warangal Rural, Telangana"
+      },
+      "confidence_score": 0.0886,
+      "id": "pred_1790925256493_iugjs",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:14:16.493Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "prediction_type": "COMPREHENSIVE",
+      "model_version_id": "mod_crop_rf_v2",
+      "inputs_json": {
+        "farm_id": "farm_001",
+        "nitrogen": 78.5,
+        "phosphorus": 42,
+        "potassium": 48,
+        "ph": 6.8,
+        "soil_moisture": 42,
+        "soil_type": "Clay Loam",
+        "farm_area": 2.5,
+        "current_crop": "Rice",
+        "resolved_weather": {
+          "temp": 33.1,
+          "hum": 43,
+          "rain": 0,
+          "upcomingRain48h": 1.2
+        }
+      },
+      "output_json": {
+        "cropRecommendation": {
+          "primaryCrop": {
+            "cropKey": "coffee",
+            "cropName": "Coffee",
+            "probability": 0.091,
+            "percentageString": "9.1%",
+            "suitability": "MODERATE",
+            "keyFactors": [
+              "Suitable pH (6.8)",
+              "Compatible Rainfall Regimen"
+            ]
+          },
+          "alternativeCrops": [
+            {
+              "cropKey": "blackgram",
+              "cropName": "Black Gram (Urad)",
+              "probability": 0.0849,
+              "percentageString": "8.5%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.1°C)"
+              ]
+            },
+            {
+              "cropKey": "mango",
+              "cropName": "Mango",
+              "probability": 0.0764,
+              "percentageString": "7.6%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.1°C)"
+              ]
+            },
+            {
+              "cropKey": "papaya",
+              "cropName": "Papaya",
+              "probability": 0.0713,
+              "percentageString": "7.1%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Adequate Potassium",
+                "Suitable pH (6.8)",
+                "Favorable Temperature (33.1°C)"
+              ]
+            }
+          ],
+          "modelVersion": "2.1.0",
+          "explanation": "Based on your soil nutrients (N: 78.5, P: 42, K: 48 kg/ha), pH of 6.8, rainfall of 120 mm, and temperature of 33.1°C, Coffee is the most agronomically viable crop.",
+          "technicalDetails": {
+            "featureScores": {
+              "Nitrogen": {
+                "actual": 78.5,
+                "ideal": 101,
+                "unit": "kg/ha",
+                "status": "DEFICIENT"
+              },
+              "Phosphorus": {
+                "actual": 42,
+                "ideal": 29,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Potassium": {
+                "actual": 48,
+                "ideal": 30,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Soil_pH": {
+                "actual": 6.8,
+                "ideal": 6.8,
+                "unit": "pH",
+                "status": "OPTIMAL"
+              },
+              "Temperature": {
+                "actual": 33.1,
+                "ideal": 26,
+                "unit": "°C",
+                "status": "ACCEPTABLE"
+              },
+              "Rainfall": {
+                "actual": 120,
+                "ideal": 158,
+                "unit": "mm",
+                "status": "OPTIMAL"
+              }
+            },
+            "temperatureScalingTau": 4.2
+          }
+        },
+        "yieldPrediction": {
+          "cropName": "Rice (Paddy)",
+          "yieldPerHectare": 2.3,
+          "unit": "tonnes / hectare",
+          "totalEstimatedYield": 5.75,
+          "totalUnit": "tonnes",
+          "confidenceInterval90": {
+            "minPerHectare": 1.67,
+            "maxPerHectare": 2.93,
+            "minTotal": 4.17,
+            "maxTotal": 7.33,
+            "unit": "tonnes"
+          },
+          "importantFactors": [
+            {
+              "factor": "Soil Nutrients (N-P-K)",
+              "impact": "NEGATIVE",
+              "description": "Sub-optimal soil nutrient levels constrain potential yield by approx. -1%."
+            },
+            {
+              "factor": "Thermal Stress",
+              "impact": "NEGATIVE",
+              "description": "Ambient temperature deviates from optimal (24°C), creating metabolic stress."
+            },
+            {
+              "factor": "Water Stress",
+              "impact": "NEGATIVE",
+              "description": "Moisture deficit detected. Irrigation supplementation recommended to prevent yield penalty."
+            }
+          ],
+          "modelVersion": "2.0.4"
+        },
+        "fertilizerAdvisory": {
+          "cropName": "Rice (Paddy)",
+          "soilHealthStatus": {
+            "nitrogenStatus": "SUFFICIENT",
+            "phosphorusStatus": "SUFFICIENT",
+            "potassiumStatus": "EXCESS",
+            "phAssessment": "Normal neutral range (6.0 - 7.5)"
+          },
+          "recommendedFertilizers": [
+            {
+              "fertilizerName": "DAP (Di-Ammonium Phosphate 18:46:0)",
+              "nutrientSupplied": "Phosphorus (P) and Starter Nitrogen (N)",
+              "quantityPerHectareKg": 13,
+              "totalQuantityKg": 33,
+              "applicationTiming": "Basal application at the time of sowing / final land preparation.",
+              "reason": "Supplies required 6 kg/ha phosphorus for root development and vigor."
+            },
+            {
+              "fertilizerName": "Well-Rotted Farmyard Manure (FYM) or Vermicompost",
+              "nutrientSupplied": "Organic Carbon, Micronutrients & Beneficial Microbes",
+              "quantityPerHectareKg": 2000,
+              "totalQuantityKg": 5000,
+              "applicationTiming": "Apply 2-3 weeks before sowing during ploughing.",
+              "reason": "Enhances soil organic carbon (SOC), cation exchange capacity, and microbial flora."
+            }
+          ],
+          "soilAmendments": [],
+          "agronomicReasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+          "safetyWarning": "Agricultural Safety Notice: These fertilizer dosage guidelines are based on standard agronomic nutrient response functions. Field soil conditions, microbial activity, and prior season green manuring can alter nutrient uptake. Always verify with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer before heavy chemical applications.",
+          "modelVersion": "1.4.0"
+        },
+        "irrigationAdvisory": {
+          "isIrrigationNeeded": false,
+          "urgency": "LOW",
+          "suggestedTiming": "Plan light watering within next 2-3 days if no rain occurs.",
+          "reasoning": "Soil moisture (42%) remains above the management depletion threshold. Daily crop evapotranspiration is approx. 2.4 mm/day.",
+          "weatherConsideration": "No significant rain in immediate forecast. Keep irrigation lines primed.",
+          "waterSavingTips": [
+            "Apply water during early morning or evening hours to minimize evaporative losses by up to 25%.",
+            "Use drip or micro-sprinkler systems if available to direct moisture straight to the active root zone.",
+            "Maintain organic mulch or crop residue cover to reduce soil surface evaporation."
+          ],
+          "modelVersion": "1.3.2"
+        },
+        "diseaseRisk": {
+          "cropName": "Rice (Paddy)",
+          "riskLevel": "LOW",
+          "severityScore": 15,
+          "potentialDiseases": [
+            {
+              "diseaseName": "Rice Blast (Magnaporthe oryzae)",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            },
+            {
+              "diseaseName": "Bacterial Leaf Blight",
+              "pathogenType": "BACTERIAL",
+              "favorableConditions": "Warm, wet weather with wind-driven rain creating leaf abrasions.",
+              "earlySymptomsToMonitor": "Translucent water-soaked streaks with bacterial ooze under humid mornings."
+            },
+            {
+              "diseaseName": "Sheath Blight",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            }
+          ],
+          "contributingFactors": [],
+          "recommendedPreventiveActions": [
+            "Maintain regular scouting routine during routine field operations.",
+            "Continue balanced nutrient management to support natural plant systemic immunity."
+          ],
+          "scientificDisclaimer": "Preventive Agronomic Advisory: This assessment evaluates microclimatic risk factors based on ambient temperature, humidity, and rainfall patterns. It indicates environmental conduciveness for pathogen development and does NOT replace visual scouting or laboratory pathology testing. Consult your local agricultural university or extension officer before spraying chemical crop protection products.",
+          "modelVersion": "1.2.0"
+        }
+      },
+      "explanation_json": {
+        "headline": "Why Coffee? It exhibits high physiological affinity with your farm's nutrient profile and microclimate.",
+        "primaryReasons": [
+          "Highly optimal Soil pH (6.8 pH)",
+          "Compatible Rainfall / Water level"
+        ],
+        "limitingFactors": [
+          "Deficient Soil Nitrogen (N) (78.5 kg/ha vs min 80)",
+          "Elevated Soil Phosphorus (P) (42 kg/ha vs max 40)",
+          "Elevated Soil Potassium (K) (48 kg/ha vs max 35)",
+          "Elevated Temperature (33.1 °C vs max 28)",
+          "Deficient Humidity (43 % vs min 50)"
+        ],
+        "factorBreakdown": [
+          {
+            "factor": "Soil Nitrogen (N)",
+            "importanceWeight": 18,
+            "status": "LIMITING",
+            "summary": "Value of 78.5 kg/ha is below the threshold of 80 kg/ha; supplemental amendment is recommended.",
+            "actualValue": "78.5 kg/ha",
+            "idealRange": "80 - 120 kg/ha"
+          },
+          {
+            "factor": "Soil Phosphorus (P)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 42 kg/ha exceeds typical upper boundary of 40 kg/ha.",
+            "actualValue": "42 kg/ha",
+            "idealRange": "15 - 40 kg/ha"
+          },
+          {
+            "factor": "Soil Potassium (K)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 48 kg/ha exceeds typical upper boundary of 35 kg/ha.",
+            "actualValue": "48 kg/ha",
+            "idealRange": "25 - 35 kg/ha"
+          },
+          {
+            "factor": "Soil pH",
+            "importanceWeight": 15,
+            "status": "OPTIMAL",
+            "summary": "Your soil/climate value of 6.8 pH is within the ideal band (6-7.5 pH) for Coffee.",
+            "actualValue": "6.8 pH",
+            "idealRange": "6 - 7.5 pH"
+          },
+          {
+            "factor": "Rainfall / Water",
+            "importanceWeight": 16,
+            "status": "FAVORABLE",
+            "summary": "Value of 120 mm falls within acceptable agronomic limits.",
+            "actualValue": "120 mm",
+            "idealRange": "120 - 200 mm"
+          },
+          {
+            "factor": "Temperature",
+            "importanceWeight": 13,
+            "status": "LIMITING",
+            "summary": "Value of 33.1 °C exceeds typical upper boundary of 28 °C.",
+            "actualValue": "33.1 °C",
+            "idealRange": "23 - 28 °C"
+          },
+          {
+            "factor": "Humidity",
+            "importanceWeight": 10,
+            "status": "LIMITING",
+            "summary": "Value of 43 % is below the threshold of 50 %; supplemental amendment is recommended.",
+            "actualValue": "43 %",
+            "idealRange": "50 - 68 %"
+          }
+        ],
+        "methodologyNote": "Feature attribution is computed using empirical agronomic deviation metrics calibrated against ICAR soil-crop response data. It quantifies how closely each field parameter matches the crop biological requirements."
+      },
+      "weather_context_json": {
+        "temperature": 33.1,
+        "humidity": 43,
+        "rainfallMm": 0,
+        "weatherCondition": "Overcast",
+        "windSpeedKmh": 8.8,
+        "recordedAt": "2026-10-02T07:02:36.002Z",
+        "source": "Open-Meteo High Resolution ECMWF/GFS",
+        "locationName": "Warangal Rural, Telangana"
+      },
+      "confidence_score": 0.091,
+      "id": "pred_1790924556007_mnjc5",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:02:36.007Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_default",
+      "prediction_type": "COMPREHENSIVE",
+      "model_version_id": "mod_crop_rf_v2",
+      "inputs_json": {
+        "nitrogen": 80,
+        "phosphorus": 48,
+        "potassium": 40,
+        "ph": 6.5,
+        "soil_moisture": 42,
+        "soil_type": "Clay Loam",
+        "farm_area": 2.5,
+        "resolved_weather": {
+          "temp": 33,
+          "hum": 43,
+          "rain": 0,
+          "upcomingRain48h": 1.2
+        }
+      },
+      "output_json": {
+        "cropRecommendation": {
+          "primaryCrop": {
+            "cropKey": "coffee",
+            "cropName": "Coffee",
+            "probability": 0.0863,
+            "percentageString": "8.6%",
+            "suitability": "MODERATE",
+            "keyFactors": [
+              "Optimal Soil Nitrogen",
+              "Suitable pH (6.5)",
+              "Compatible Rainfall Regimen"
+            ]
+          },
+          "alternativeCrops": [
+            {
+              "cropKey": "mango",
+              "cropName": "Mango",
+              "probability": 0.0825,
+              "percentageString": "8.3%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.5)",
+                "Favorable Temperature (33°C)"
+              ]
+            },
+            {
+              "cropKey": "blackgram",
+              "cropName": "Black Gram (Urad)",
+              "probability": 0.0801,
+              "percentageString": "8.0%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.5)",
+                "Favorable Temperature (33°C)"
+              ]
+            },
+            {
+              "cropKey": "pigeonpeas",
+              "cropName": "Pigeonpeas (Red Gram / Arhar)",
+              "probability": 0.0747,
+              "percentageString": "7.5%",
+              "suitability": "MODERATE",
+              "keyFactors": [
+                "Suitable pH (6.5)",
+                "Favorable Temperature (33°C)",
+                "Compatible Rainfall Regimen"
+              ]
+            }
+          ],
+          "modelVersion": "2.1.0",
+          "explanation": "Based on your soil nutrients (N: 80, P: 48, K: 40 kg/ha), pH of 6.5, rainfall of 120 mm, and temperature of 33°C, Coffee is the most agronomically viable crop.",
+          "technicalDetails": {
+            "featureScores": {
+              "Nitrogen": {
+                "actual": 80,
+                "ideal": 101,
+                "unit": "kg/ha",
+                "status": "OPTIMAL"
+              },
+              "Phosphorus": {
+                "actual": 48,
+                "ideal": 29,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Potassium": {
+                "actual": 40,
+                "ideal": 30,
+                "unit": "kg/ha",
+                "status": "EXCESS"
+              },
+              "Soil_pH": {
+                "actual": 6.5,
+                "ideal": 6.8,
+                "unit": "pH",
+                "status": "OPTIMAL"
+              },
+              "Temperature": {
+                "actual": 33,
+                "ideal": 26,
+                "unit": "°C",
+                "status": "ACCEPTABLE"
+              },
+              "Rainfall": {
+                "actual": 120,
+                "ideal": 158,
+                "unit": "mm",
+                "status": "OPTIMAL"
+              }
+            },
+            "temperatureScalingTau": 4.2
+          }
+        },
+        "yieldPrediction": {
+          "cropName": "Coffee",
+          "yieldPerHectare": 1.58,
+          "unit": "tonnes / hectare",
+          "totalEstimatedYield": 3.95,
+          "totalUnit": "tonnes",
+          "confidenceInterval90": {
+            "minPerHectare": 0.95,
+            "maxPerHectare": 2.21,
+            "minTotal": 2.38,
+            "maxTotal": 5.53,
+            "unit": "tonnes"
+          },
+          "importantFactors": [
+            {
+              "factor": "Soil Nutrients (N-P-K)",
+              "impact": "POSITIVE",
+              "description": "Nutrient availability satisfies 108% of crop physiological requirement."
+            },
+            {
+              "factor": "Thermal Stress",
+              "impact": "NEGATIVE",
+              "description": "Ambient temperature deviates from optimal (26°C), creating metabolic stress."
+            },
+            {
+              "factor": "Water Supply & Moisture",
+              "impact": "POSITIVE",
+              "description": "Adequate precipitation and soil moisture support transpiration demand."
+            }
+          ],
+          "modelVersion": "2.0.4"
+        },
+        "fertilizerAdvisory": {
+          "cropName": "Coffee",
+          "soilHealthStatus": {
+            "nitrogenStatus": "SUFFICIENT",
+            "phosphorusStatus": "EXCESS",
+            "potassiumStatus": "EXCESS",
+            "phAssessment": "Normal neutral range (6.0 - 7.5)"
+          },
+          "recommendedFertilizers": [
+            {
+              "fertilizerName": "Urea (46% Nitrogen)",
+              "nutrientSupplied": "Nitrogen (N)",
+              "quantityPerHectareKg": 46,
+              "totalQuantityKg": 115,
+              "applicationTiming": "Split dose: 50% at 25-30 days after sowing, 50% at active tillering/pre-flowering.",
+              "reason": "Offsets nitrogen deficit of 21 kg/ha to support vegetative canopy growth."
+            },
+            {
+              "fertilizerName": "Well-Rotted Farmyard Manure (FYM) or Vermicompost",
+              "nutrientSupplied": "Organic Carbon, Micronutrients & Beneficial Microbes",
+              "quantityPerHectareKg": 2000,
+              "totalQuantityKg": 5000,
+              "applicationTiming": "Apply 2-3 weeks before sowing during ploughing.",
+              "reason": "Enhances soil organic carbon (SOC), cation exchange capacity, and microbial flora."
+            }
+          ],
+          "soilAmendments": [],
+          "agronomicReasoning": "Recommendations are tailored to Coffee nutritional benchmarks (target N:101, P:29, K:30 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+          "safetyWarning": "Agricultural Safety Notice: These fertilizer dosage guidelines are based on standard agronomic nutrient response functions. Field soil conditions, microbial activity, and prior season green manuring can alter nutrient uptake. Always verify with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer before heavy chemical applications.",
+          "modelVersion": "1.4.0"
+        },
+        "irrigationAdvisory": {
+          "isIrrigationNeeded": false,
+          "urgency": "LOW",
+          "suggestedTiming": "Plan light watering within next 2-3 days if no rain occurs.",
+          "reasoning": "Soil moisture (42%) remains above the management depletion threshold. Daily crop evapotranspiration is approx. 2.1 mm/day.",
+          "weatherConsideration": "No significant rain in immediate forecast. Keep irrigation lines primed.",
+          "waterSavingTips": [
+            "Apply water during early morning or evening hours to minimize evaporative losses by up to 25%.",
+            "Use drip or micro-sprinkler systems if available to direct moisture straight to the active root zone.",
+            "Maintain organic mulch or crop residue cover to reduce soil surface evaporation."
+          ],
+          "modelVersion": "1.3.2"
+        },
+        "diseaseRisk": {
+          "cropName": "Coffee",
+          "riskLevel": "LOW",
+          "severityScore": 15,
+          "potentialDiseases": [
+            {
+              "diseaseName": "Coffee Leaf Rust (Hemileia vastatrix)",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "Cool nights with heavy dew followed by mild warm days (18-24°C).",
+              "earlySymptomsToMonitor": "Pustules of reddish-brown or powdery spores on leaf surfaces."
+            },
+            {
+              "diseaseName": "Black Rot",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            },
+            {
+              "diseaseName": "Berry Disease",
+              "pathogenType": "FUNGAL",
+              "favorableConditions": "High humidity (>80%) and temperatures between 22°C - 28°C.",
+              "earlySymptomsToMonitor": "Small water-soaked or necrotic spots on lower leaves and stems."
+            }
+          ],
+          "contributingFactors": [],
+          "recommendedPreventiveActions": [
+            "Maintain regular scouting routine during routine field operations.",
+            "Continue balanced nutrient management to support natural plant systemic immunity."
+          ],
+          "scientificDisclaimer": "Preventive Agronomic Advisory: This assessment evaluates microclimatic risk factors based on ambient temperature, humidity, and rainfall patterns. It indicates environmental conduciveness for pathogen development and does NOT replace visual scouting or laboratory pathology testing. Consult your local agricultural university or extension officer before spraying chemical crop protection products.",
+          "modelVersion": "1.2.0"
+        }
+      },
+      "explanation_json": {
+        "headline": "Why Coffee? It exhibits high physiological affinity with your farm's nutrient profile and microclimate.",
+        "primaryReasons": [
+          "Compatible Soil Nitrogen (N) level",
+          "Highly optimal Soil pH (6.5 pH)",
+          "Compatible Rainfall / Water level"
+        ],
+        "limitingFactors": [
+          "Elevated Soil Phosphorus (P) (48 kg/ha vs max 40)",
+          "Elevated Soil Potassium (K) (40 kg/ha vs max 35)",
+          "Elevated Temperature (33 °C vs max 28)",
+          "Deficient Humidity (43 % vs min 50)"
+        ],
+        "factorBreakdown": [
+          {
+            "factor": "Soil Nitrogen (N)",
+            "importanceWeight": 18,
+            "status": "FAVORABLE",
+            "summary": "Value of 80 kg/ha falls within acceptable agronomic limits.",
+            "actualValue": "80 kg/ha",
+            "idealRange": "80 - 120 kg/ha"
+          },
+          {
+            "factor": "Soil Phosphorus (P)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 48 kg/ha exceeds typical upper boundary of 40 kg/ha.",
+            "actualValue": "48 kg/ha",
+            "idealRange": "15 - 40 kg/ha"
+          },
+          {
+            "factor": "Soil Potassium (K)",
+            "importanceWeight": 14,
+            "status": "LIMITING",
+            "summary": "Value of 40 kg/ha exceeds typical upper boundary of 35 kg/ha.",
+            "actualValue": "40 kg/ha",
+            "idealRange": "25 - 35 kg/ha"
+          },
+          {
+            "factor": "Soil pH",
+            "importanceWeight": 15,
+            "status": "OPTIMAL",
+            "summary": "Your soil/climate value of 6.5 pH is within the ideal band (6-7.5 pH) for Coffee.",
+            "actualValue": "6.5 pH",
+            "idealRange": "6 - 7.5 pH"
+          },
+          {
+            "factor": "Rainfall / Water",
+            "importanceWeight": 16,
+            "status": "FAVORABLE",
+            "summary": "Value of 120 mm falls within acceptable agronomic limits.",
+            "actualValue": "120 mm",
+            "idealRange": "120 - 200 mm"
+          },
+          {
+            "factor": "Temperature",
+            "importanceWeight": 13,
+            "status": "LIMITING",
+            "summary": "Value of 33 °C exceeds typical upper boundary of 28 °C.",
+            "actualValue": "33 °C",
+            "idealRange": "23 - 28 °C"
+          },
+          {
+            "factor": "Humidity",
+            "importanceWeight": 10,
+            "status": "LIMITING",
+            "summary": "Value of 43 % is below the threshold of 50 %; supplemental amendment is recommended.",
+            "actualValue": "43 %",
+            "idealRange": "50 - 68 %"
+          }
+        ],
+        "methodologyNote": "Feature attribution is computed using empirical agronomic deviation metrics calibrated against ICAR soil-crop response data. It quantifies how closely each field parameter matches the crop biological requirements."
+      },
+      "weather_context_json": {
+        "temperature": 33,
+        "humidity": 43,
+        "rainfallMm": 0,
+        "weatherCondition": "Overcast",
+        "windSpeedKmh": 8.8,
+        "recordedAt": "2026-10-02T07:02:00.830Z",
+        "source": "Open-Meteo High Resolution ECMWF/GFS",
+        "locationName": "Farm Region"
+      },
+      "confidence_score": 0.0863,
+      "id": "pred_1790924520833_p9tdc",
+      "status": "COMPLETED",
+      "created_at": "2026-10-02T07:02:00.833Z"
+    }
+  ],
+  "recommendations": [
+    {
+      "prediction_id": "pred_1790926648108_x9z1x",
+      "user_id": "usr_farmer_001",
+      "farm_id": "farm_001",
+      "title": "Nutrient Management for Rice (Paddy)",
+      "category": "FERTILIZER",
+      "action_items_json": [
+        "DAP (Di-Ammonium Phosphate 18:46:0): 65 kg/ha (Basal application at the time of sowing / final land preparation.)",
+        "Well-Rotted Farmyard Manure (FYM) or Vermicompost: 2000 kg/ha (Apply 2-3 weeks before sowing during ploughing.)"
+      ],
+      "reasoning": "Recommendations are tailored to Rice (Paddy) nutritional benchmarks (target N:80, P:48, K:40 kg/ha). Calculated fertilizer dosages account for the stoichiometric nutrient concentrations in standard grades.",
+      "urgency": "MEDIUM",
+      "id": "rec_1790926648110_rbv5x",
+      "created_at": "2026-10-02T07:37:28.110Z"
+    }
+  ],
+  "weather_records": [],
+  "alerts": [
+    {
+      "id": "alt_001",
+      "farm_id": "farm_001",
+      "alert_type": "WEATHER",
+      "severity": "MEDIUM",
+      "title": "Moderate Rainfall Forecasted in 48h",
+      "message": "Upcoming showers expected (~18mm). Delay scheduled urea top-dressing to prevent leaching.",
+      "is_active": true,
+      "created_at": "2026-10-02T07:01:50.832Z"
+    }
+  ],
+  "audit_logs": [
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926464847_hvq3",
+      "created_at": "2026-10-02T07:34:24.847Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "CONFIRM_SOIL_REPORT",
+      "resource": "SoilReport",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "report_id": "rep_1790926461426_abnlu",
+        "farm_id": "farm_001",
+        "confirmed_values": {
+          "nitrogen": 245,
+          "phosphorus": 18,
+          "potassium": 210,
+          "ph": 6.8,
+          "soil_moisture": 26,
+          "organic_carbon": 0.72,
+          "electrical_conductivity": 0.42,
+          "soil_type": "Clay Loam"
+        }
+      },
+      "id": "aud_1790926461430_57im",
+      "created_at": "2026-10-02T07:34:21.430Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926461393_5hsw",
+      "created_at": "2026-10-02T07:34:21.393Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926456806_5onn",
+      "created_at": "2026-10-02T07:34:16.806Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926449500_qn1c",
+      "created_at": "2026-10-02T07:34:09.500Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926395058_x5wb",
+      "created_at": "2026-10-02T07:33:15.058Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "CONFIRM_SOIL_REPORT",
+      "resource": "SoilReport",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "report_id": "rep_1790926388008_n2k0k",
+        "farm_id": "farm_001",
+        "confirmed_values": {
+          "nitrogen": 245,
+          "phosphorus": 18,
+          "potassium": 210,
+          "ph": 6.8,
+          "soil_type": "Clay Loam",
+          "soil_moisture": 40,
+          "organic_carbon": 0.72,
+          "electrical_conductivity": 0.42
+        }
+      },
+      "id": "aud_1790926388013_6b7l",
+      "created_at": "2026-10-02T07:33:08.013Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926387965_deu0",
+      "created_at": "2026-10-02T07:33:07.965Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790926375785_mo7a",
+      "created_at": "2026-10-02T07:32:55.785Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790925255298_ingn",
+      "created_at": "2026-10-02T07:14:15.298Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790925251709_d19q",
+      "created_at": "2026-10-02T07:14:11.709Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790925245006_p0ci",
+      "created_at": "2026-10-02T07:14:05.006Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790925171379_uts8",
+      "created_at": "2026-10-02T07:12:51.379Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790924554247_qitw",
+      "created_at": "2026-10-02T07:02:34.247Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790924519512_5uhn",
+      "created_at": "2026-10-02T07:01:59.512Z"
+    },
+    {
+      "user_id": "usr_farmer_001",
+      "action": "USER_LOGIN",
+      "resource": "User",
+      "ip_address": "127.0.0.1",
+      "status": "SUCCESS",
+      "details_json": {
+        "email": "farmer@agriwise.org"
+      },
+      "id": "aud_1790924515787_v5ct",
+      "created_at": "2026-10-02T07:01:55.787Z"
+    }
+  ],
+  "soil_reports": [
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "Lab_Report_2026.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8
+      },
+      "status": "CONFIRMED",
+      "source": "OCR_PARSER",
+      "id": "rep_1790933088927_ly78m",
+      "upload_date": "2026-10-02T09:24:48.927Z",
+      "confirmed_at": "2026-10-02T09:24:48.929Z",
+      "confirmed_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_type": "Clay Loam",
+        "soil_moisture": 42
+      }
+    },
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "Lab_Report_2026.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8
+      },
+      "status": "CONFIRMED",
+      "source": "OCR_PARSER",
+      "id": "rep_1790926474085_0f5fo",
+      "upload_date": "2026-10-02T07:34:34.085Z",
+      "confirmed_at": "2026-10-02T07:34:34.087Z",
+      "confirmed_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_type": "Clay Loam",
+        "soil_moisture": 42
+      }
+    },
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "Confirmed_Soil_Card.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_moisture": 26,
+        "organic_carbon": 0.72,
+        "electrical_conductivity": 0.42,
+        "soil_type": "Clay Loam"
+      },
+      "status": "CONFIRMED",
+      "source": "MANUAL",
+      "id": "rep_1790926461426_abnlu",
+      "upload_date": "2026-10-02T07:34:21.426Z",
+      "confirmed_at": "2026-10-02T07:34:21.427Z",
+      "confirmed_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_moisture": 26,
+        "organic_carbon": 0.72,
+        "electrical_conductivity": 0.42,
+        "soil_type": "Clay Loam"
+      }
+    },
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "AP_Krishna_Delta_Soil_Health_Card.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "organic_carbon": 0.72,
+        "electrical_conductivity": 0.42,
+        "soil_type": "Clay Loam",
+        "lab_name": "Regional Agricultural Research Station (RARS), Warangal",
+        "sample_id": "SHC-2026-683975",
+        "test_date": "2026-10-02"
+      },
+      "status": "PENDING_CONFIRMATION",
+      "source": "OCR_PARSER",
+      "id": "rep_1790926457250_jly3w",
+      "upload_date": "2026-10-02T07:34:17.250Z"
+    },
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "Confirmed_Soil_Card.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_type": "Clay Loam",
+        "soil_moisture": 40,
+        "organic_carbon": 0.72,
+        "electrical_conductivity": 0.42
+      },
+      "status": "CONFIRMED",
+      "source": "MANUAL",
+      "id": "rep_1790926388008_n2k0k",
+      "upload_date": "2026-10-02T07:33:08.008Z",
+      "confirmed_at": "2026-10-02T07:33:08.009Z",
+      "confirmed_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_type": "Clay Loam",
+        "soil_moisture": 40,
+        "organic_carbon": 0.72,
+        "electrical_conductivity": 0.42
+      }
+    },
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "warangal_Soil_Health_Card.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "organic_carbon": 0.72,
+        "electrical_conductivity": 0.42,
+        "soil_type": "Clay Loam",
+        "lab_name": "Regional Agricultural Research Station (RARS), Warangal",
+        "sample_id": "SHC-2026-960472",
+        "test_date": "2026-10-02"
+      },
+      "status": "PENDING_CONFIRMATION",
+      "source": "OCR_PARSER",
+      "id": "rep_1790926376578_evv8c",
+      "upload_date": "2026-10-02T07:32:56.578Z"
+    },
+    {
+      "farm_id": "farm_001",
+      "user_id": "usr_farmer_001",
+      "file_name": "Lab_Report_2026.pdf",
+      "file_type": "application/pdf",
+      "extracted_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8
+      },
+      "status": "CONFIRMED",
+      "source": "OCR_PARSER",
+      "id": "rep_1790926353863_n4u0n",
+      "upload_date": "2026-10-02T07:32:33.863Z",
+      "confirmed_at": "2026-10-02T07:32:33.875Z",
+      "confirmed_values": {
+        "nitrogen": 245,
+        "phosphorus": 18,
+        "potassium": 210,
+        "ph": 6.8,
+        "soil_type": "Clay Loam",
+        "soil_moisture": 42
+      }
+    }
+  ]
+}

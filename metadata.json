@@ -1,0 +1,6 @@
+{
+  "name": "AgriWise — AI-Powered Smart Farming Decision Support System",
+  "description": "Production-ready agricultural decision support platform providing crop recommendation, yield prediction, fertilizer and irrigation advisories, disease-risk assessment, and live weather alerts for farmers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

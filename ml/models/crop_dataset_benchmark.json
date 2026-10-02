@@ -1,0 +1,221 @@
+{
+  "dataset_metadata": {
+    "source": "ICAR & Kaggle Benchmark for Agricultural Decision Support",
+    "samples": 2200,
+    "classes": 22,
+    "features": ["nitrogen", "phosphorus", "potassium", "temperature", "humidity", "ph", "rainfall"],
+    "version": "2.1.0"
+  },
+  "crops": {
+    "rice": {
+      "name": "Rice (Paddy)",
+      "ideal": { "N": 80, "P": 48, "K": 40, "temp": 24, "humidity": 82, "ph": 6.5, "rainfall": 236 },
+      "ranges": { "N": [60, 100], "P": [35, 60], "K": [35, 45], "temp": [20, 27], "humidity": [78, 88], "ph": [5.5, 7.5], "rainfall": [180, 300] },
+      "base_yield_tonnes_ha": 3.8,
+      "water_demand": "VERY_HIGH",
+      "kc_peak": 1.2,
+      "growth_days": 120,
+      "susceptible_diseases": ["Rice Blast (Magnaporthe oryzae)", "Bacterial Leaf Blight", "Sheath Blight"]
+    },
+    "maize": {
+      "name": "Maize (Corn)",
+      "ideal": { "N": 78, "P": 48, "K": 20, "temp": 22, "humidity": 65, "ph": 6.5, "rainfall": 85 },
+      "ranges": { "N": [60, 100], "P": [35, 60], "K": [15, 25], "temp": [18, 27], "humidity": [55, 75], "ph": [5.5, 7.2], "rainfall": [60, 110] },
+      "base_yield_tonnes_ha": 4.5,
+      "water_demand": "MEDIUM",
+      "kc_peak": 1.15,
+      "growth_days": 105,
+      "susceptible_diseases": ["Maydis Leaf Blight", "Common Rust", "Stalk Rot"]
+    },
+    "cotton": {
+      "name": "Cotton",
+      "ideal": { "N": 118, "P": 46, "K": 20, "temp": 24, "humidity": 80, "ph": 6.8, "rainfall": 80 },
+      "ranges": { "N": [100, 140], "P": [35, 60], "K": [15, 25], "temp": [22, 28], "humidity": [75, 85], "ph": [6.0, 7.8], "rainfall": [60, 100] },
+      "base_yield_tonnes_ha": 2.2,
+      "water_demand": "MEDIUM",
+      "kc_peak": 1.1,
+      "growth_days": 160,
+      "susceptible_diseases": ["Bacterial Blight (Angular Leaf Spot)", "Fusarium Wilt", "Grey Mildew"]
+    },
+    "chickpea": {
+      "name": "Chickpea (Gram)",
+      "ideal": { "N": 40, "P": 68, "K": 80, "temp": 19, "humidity": 17, "ph": 7.3, "rainfall": 80 },
+      "ranges": { "N": [20, 60], "P": [55, 80], "K": [70, 90], "temp": [17, 21], "humidity": [14, 20], "ph": [6.0, 8.5], "rainfall": [65, 95] },
+      "base_yield_tonnes_ha": 1.4,
+      "water_demand": "LOW",
+      "kc_peak": 0.85,
+      "growth_days": 100,
+      "susceptible_diseases": ["Ascochyta Blight", "Fusarium Wilt", "Dry Root Rot"]
+    },
+    "pigeonpeas": {
+      "name": "Pigeonpeas (Red Gram / Arhar)",
+      "ideal": { "N": 21, "P": 68, "K": 20, "temp": 28, "humidity": 48, "ph": 5.8, "rainfall": 150 },
+      "ranges": { "N": [10, 40], "P": [55, 80], "K": [15, 25], "temp": [20, 36], "humidity": [30, 65], "ph": [5.0, 7.5], "rainfall": [90, 200] },
+      "base_yield_tonnes_ha": 1.2,
+      "water_demand": "LOW",
+      "kc_peak": 0.9,
+      "growth_days": 180,
+      "susceptible_diseases": ["Sterility Mosaic Disease", "Phytophthora Stem Blight"]
+    },
+    "kidneybeans": {
+      "name": "Kidney Beans (Rajma)",
+      "ideal": { "N": 21, "P": 68, "K": 20, "temp": 20, "humidity": 22, "ph": 5.7, "rainfall": 106 },
+      "ranges": { "N": [10, 40], "P": [55, 80], "K": [15, 25], "temp": [15, 25], "humidity": [18, 25], "ph": [5.2, 6.0], "rainfall": [60, 150] },
+      "base_yield_tonnes_ha": 1.5,
+      "water_demand": "MEDIUM",
+      "kc_peak": 1.0,
+      "growth_days": 90,
+      "susceptible_diseases": ["Anthracnose", "Angular Leaf Spot", "Common Blight"]
+    },
+    "mothbeans": {
+      "name": "Mothbeans",
+      "ideal": { "N": 21, "P": 48, "K": 20, "temp": 28, "humidity": 53, "ph": 6.8, "rainfall": 51 },
+      "ranges": { "N": [10, 40], "P": [35, 60], "K": [15, 25], "temp": [24, 32], "humidity": [40, 65], "ph": [5.5, 8.0], "rainfall": [30, 75] },
+      "base_yield_tonnes_ha": 0.8,
+      "water_demand": "VERY_LOW",
+      "kc_peak": 0.75,
+      "growth_days": 75,
+      "susceptible_diseases": ["Yellow Mosaic Virus", "Bacterial Leaf Spot"]
+    },
+    "mungbean": {
+      "name": "Mung Bean (Green Gram)",
+      "ideal": { "N": 21, "P": 47, "K": 20, "temp": 28, "humidity": 86, "ph": 6.7, "rainfall": 48 },
+      "ranges": { "N": [10, 40], "P": [35, 60], "K": [15, 25], "temp": [25, 32], "humidity": [80, 90], "ph": [6.0, 7.5], "rainfall": [35, 60] },
+      "base_yield_tonnes_ha": 1.1,
+      "water_demand": "LOW",
+      "kc_peak": 0.8,
+      "growth_days": 70,
+      "susceptible_diseases": ["Powdery Mildew", "Cercospora Leaf Spot"]
+    },
+    "blackgram": {
+      "name": "Black Gram (Urad)",
+      "ideal": { "N": 40, "P": 68, "K": 19, "temp": 30, "humidity": 65, "ph": 7.1, "rainfall": 68 },
+      "ranges": { "N": [20, 60], "P": [55, 80], "K": [15, 25], "temp": [25, 35], "humidity": [60, 70], "ph": [6.5, 7.8], "rainfall": [60, 75] },
+      "base_yield_tonnes_ha": 1.0,
+      "water_demand": "LOW",
+      "kc_peak": 0.8,
+      "growth_days": 80,
+      "susceptible_diseases": ["Root Rot", "Leaf Crinkle Virus"]
+    },
+    "lentil": {
+      "name": "Lentil (Masoor)",
+      "ideal": { "N": 19, "P": 68, "K": 19, "temp": 25, "humidity": 65, "ph": 6.9, "rainfall": 46 },
+      "ranges": { "N": [10, 30], "P": [55, 80], "K": [15, 25], "temp": [18, 30], "humidity": [60, 70], "ph": [6.0, 7.8], "rainfall": [35, 55] },
+      "base_yield_tonnes_ha": 1.3,
+      "water_demand": "LOW",
+      "kc_peak": 0.85,
+      "growth_days": 110,
+      "susceptible_diseases": ["Rust (Uromyces viciae-fabae)", "Wilt"]
+    },
+    "pomegranate": {
+      "name": "Pomegranate",
+      "ideal": { "N": 19, "P": 19, "K": 40, "temp": 22, "humidity": 90, "ph": 6.4, "rainfall": 108 },
+      "ranges": { "N": [10, 30], "P": [10, 30], "K": [35, 45], "temp": [18, 25], "humidity": [85, 95], "ph": [5.5, 7.2], "rainfall": [100, 115] },
+      "base_yield_tonnes_ha": 8.5,
+      "water_demand": "MEDIUM",
+      "kc_peak": 0.7,
+      "growth_days": 300,
+      "susceptible_diseases": ["Bacterial Blight (Xanthomonas)", "Cercospora Fruit Spot"]
+    },
+    "banana": {
+      "name": "Banana",
+      "ideal": { "N": 100, "P": 75, "K": 50, "temp": 27, "humidity": 80, "ph": 6.0, "rainfall": 105 },
+      "ranges": { "N": [80, 120], "P": [70, 90], "K": [45, 55], "temp": [25, 30], "humidity": [75, 85], "ph": [5.5, 6.5], "rainfall": [90, 120] },
+      "base_yield_tonnes_ha": 35.0,
+      "water_demand": "VERY_HIGH",
+      "kc_peak": 1.25,
+      "growth_days": 330,
+      "susceptible_diseases": ["Sigatoka Leaf Spot", "Panama Disease (Fusarium)"]
+    },
+    "mango": {
+      "name": "Mango",
+      "ideal": { "N": 20, "P": 27, "K": 30, "temp": 31, "humidity": 50, "ph": 5.7, "rainfall": 95 },
+      "ranges": { "N": [10, 30], "P": [15, 40], "K": [25, 35], "temp": [27, 36], "humidity": [45, 55], "ph": [4.5, 6.8], "rainfall": [85, 105] },
+      "base_yield_tonnes_ha": 7.0,
+      "water_demand": "MEDIUM",
+      "kc_peak": 0.8,
+      "growth_days": 365,
+      "susceptible_diseases": ["Anthracnose", "Powdery Mildew", "Dieback"]
+    },
+    "grapes": {
+      "name": "Grapes",
+      "ideal": { "N": 23, "P": 133, "K": 200, "temp": 24, "humidity": 82, "ph": 6.0, "rainfall": 70 },
+      "ranges": { "N": [10, 35], "P": [120, 145], "K": [190, 210], "temp": [15, 32], "humidity": [75, 90], "ph": [5.5, 6.5], "rainfall": [60, 80] },
+      "base_yield_tonnes_ha": 18.0,
+      "water_demand": "MEDIUM",
+      "kc_peak": 0.85,
+      "growth_days": 150,
+      "susceptible_diseases": ["Downy Mildew (Plasmopara viticola)", "Powdery Mildew", "Black Rot"]
+    },
+    "watermelon": {
+      "name": "Watermelon",
+      "ideal": { "N": 99, "P": 17, "K": 50, "temp": 26, "humidity": 85, "ph": 6.5, "rainfall": 51 },
+      "ranges": { "N": [80, 120], "P": [10, 25], "K": [45, 55], "temp": [24, 28], "humidity": [80, 90], "ph": [6.0, 7.0], "rainfall": [40, 60] },
+      "base_yield_tonnes_ha": 25.0,
+      "water_demand": "MEDIUM",
+      "kc_peak": 1.0,
+      "growth_days": 90,
+      "susceptible_diseases": ["Fusarium Wilt", "Gummy Stem Blight", "Anthracnose"]
+    },
+    "apple": {
+      "name": "Apple",
+      "ideal": { "N": 21, "P": 134, "K": 200, "temp": 22, "humidity": 92, "ph": 6.0, "rainfall": 113 },
+      "ranges": { "N": [10, 35], "P": [120, 145], "K": [190, 210], "temp": [15, 24], "humidity": [88, 95], "ph": [5.5, 6.5], "rainfall": [100, 125] },
+      "base_yield_tonnes_ha": 12.0,
+      "water_demand": "HIGH",
+      "kc_peak": 0.95,
+      "growth_days": 180,
+      "susceptible_diseases": ["Apple Scab (Venturia inaequalis)", "Fire Blight", "Powdery Mildew"]
+    },
+    "orange": {
+      "name": "Orange / Citrus",
+      "ideal": { "N": 20, "P": 17, "K": 10, "temp": 23, "humidity": 92, "ph": 7.0, "rainfall": 110 },
+      "ranges": { "N": [10, 30], "P": [10, 25], "K": [5, 15], "temp": [15, 34], "humidity": [88, 95], "ph": [6.5, 7.5], "rainfall": [100, 120] },
+      "base_yield_tonnes_ha": 15.0,
+      "water_demand": "MEDIUM",
+      "kc_peak": 0.8,
+      "growth_days": 270,
+      "susceptible_diseases": ["Citrus Canker", "Greening (HLB)", "Phytophthora Gummosis"]
+    },
+    "papaya": {
+      "name": "Papaya",
+      "ideal": { "N": 50, "P": 59, "K": 50, "temp": 34, "humidity": 92, "ph": 6.7, "rainfall": 143 },
+      "ranges": { "N": [30, 70], "P": [45, 70], "K": [45, 55], "temp": [25, 42], "humidity": [88, 95], "ph": [6.0, 7.5], "rainfall": [130, 160] },
+      "base_yield_tonnes_ha": 30.0,
+      "water_demand": "HIGH",
+      "kc_peak": 1.1,
+      "growth_days": 300,
+      "susceptible_diseases": ["Papaya Ringspot Virus", "Anthracnose", "Damping Off"]
+    },
+    "coconut": {
+      "name": "Coconut",
+      "ideal": { "N": 22, "P": 17, "K": 31, "temp": 27, "humidity": 95, "ph": 6.0, "rainfall": 176 },
+      "ranges": { "N": [10, 35], "P": [10, 25], "K": [25, 35], "temp": [25, 30], "humidity": [90, 99], "ph": [5.5, 6.5], "rainfall": [150, 200] },
+      "base_yield_tonnes_ha": 10.0,
+      "water_demand": "HIGH",
+      "kc_peak": 1.0,
+      "growth_days": 365,
+      "susceptible_diseases": ["Bud Rot", "Stem Bleeding", "Root Wilt"]
+    },
+    "jute": {
+      "name": "Jute",
+      "ideal": { "N": 78, "P": 47, "K": 40, "temp": 25, "humidity": 80, "ph": 6.7, "rainfall": 175 },
+      "ranges": { "N": [60, 100], "P": [35, 60], "K": [35, 45], "temp": [23, 27], "humidity": [75, 85], "ph": [6.0, 7.4], "rainfall": [150, 200] },
+      "base_yield_tonnes_ha": 2.8,
+      "water_demand": "HIGH",
+      "kc_peak": 1.1,
+      "growth_days": 120,
+      "susceptible_diseases": ["Stem Rot (Macrophomina)", "Root Rot", "Anthracnose"]
+    },
+    "coffee": {
+      "name": "Coffee",
+      "ideal": { "N": 101, "P": 29, "K": 30, "temp": 26, "humidity": 59, "ph": 6.8, "rainfall": 158 },
+      "ranges": { "N": [80, 120], "P": [15, 40], "K": [25, 35], "temp": [23, 28], "humidity": [50, 68], "ph": [6.0, 7.5], "rainfall": [120, 200] },
+      "base_yield_tonnes_ha": 1.6,
+      "water_demand": "HIGH",
+      "kc_peak": 1.05,
+      "growth_days": 270,
+      "susceptible_diseases": ["Coffee Leaf Rust (Hemileia vastatrix)", "Black Rot", "Berry Disease"]
+    }
+  }
+}
