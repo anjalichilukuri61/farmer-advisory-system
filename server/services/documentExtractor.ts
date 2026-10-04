@@ -41,12 +41,18 @@ export class DocumentExtractorService {
 
     if (mimeType === 'application/pdf' || fileName.toLowerCase().endsWith('.pdf')) {
       try {
-        console.log('[DocumentExtractor] Attempting local PDF text extraction...');
-        const pdfParse = require('pdf-parse');
-        const data = await pdfParse(buffer);
-        const text = data.text;
+        console.log('[DocumentExtractor] Attempting local PDF text extraction with pdf2json...');
+        const text = await new Promise<string>((resolve, reject) => {
+          const PDFParser = require('pdf2json');
+          const pdfParser = new PDFParser(this, 1);
+          pdfParser.on('pdfParser_dataError', (errData: any) => reject(errData.parserError));
+          pdfParser.on('pdfParser_dataReady', () => {
+            resolve(pdfParser.getRawTextContent());
+          });
+          pdfParser.parseBuffer(buffer);
+        });
+        
         console.log('[DocumentExtractor] PDF extraction successful, length:', text.length);
-
         return this.parseText(text, fileName, 'OCR_PARSER');
       } catch (err) {
         console.error('[DocumentExtractor] Local PDF parser failed:', err);
