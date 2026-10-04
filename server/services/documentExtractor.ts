@@ -43,9 +43,8 @@ export class DocumentExtractorService {
     if (mimeType === 'application/pdf' || fileName.toLowerCase().endsWith('.pdf')) {
       try {
         console.log('[DocumentExtractor] Attempting local PDF text extraction...');
-        const { PDFParse } = require('pdf-parse');
-        const parser = new PDFParse({ data: new Uint8Array(buffer) });
-        const data = await parser.getText();
+        const pdfParse = require('pdf-parse');
+        const data = await pdfParse(buffer);
         const text = data.text;
         console.log('[DocumentExtractor] PDF extraction successful, length:', text.length);
 
