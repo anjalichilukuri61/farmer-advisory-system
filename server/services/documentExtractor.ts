@@ -52,10 +52,11 @@ export class DocumentExtractorService {
         return this.parseText(text, fileName, 'OCR_PARSER');
       } catch (err) {
         console.error('[DocumentExtractor] Local PDF parser failed:', err);
+        return this.formatExtractedData({}, 'OCR_PARSER', fileName);
       }
     }
 
-    // If it's an image, or PDF parsing failed, try Tesseract.js (which can read images)
+    // If it's an image, try Tesseract.js
     return this.extractFromImageOCR(buffer, fileName);
   }
 
