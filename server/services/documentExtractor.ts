@@ -1,6 +1,5 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const Tesseract = require('tesseract.js');
 
 export interface ExtractedSoilData {
   nitrogen?: number;
@@ -173,6 +172,7 @@ export class DocumentExtractorService {
   private static async extractFromImageOCR(buffer: Buffer, fileName: string): Promise<ExtractedSoilData> {
     try {
       console.log('[DocumentExtractor] Attempting Tesseract.js OCR for image...');
+      const Tesseract = require('tesseract.js');
       const { data: { text } } = await Tesseract.recognize(buffer, 'eng');
       console.log('[DocumentExtractor] OCR extraction successful, length:', text.length);
 
