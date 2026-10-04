@@ -54,10 +54,12 @@ export const FertilizerRecommendationView: React.FC<FertilizerRecommendationView
   };
 
   useEffect(() => {
-    if (profile && !fertilizerResult) {
+    if (profile) {
       calculateFertilizer();
+    } else {
+      setFertilizerResult(null);
     }
-  }, [farm, selectedCrop]);
+  }, [profile, selectedCrop]);
 
   const getSpokenText = () => {
     if (!fertilizerResult) return '';

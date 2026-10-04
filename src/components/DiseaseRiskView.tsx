@@ -45,10 +45,12 @@ export const DiseaseRiskView: React.FC<DiseaseRiskViewProps> = ({
   };
 
   useEffect(() => {
-    if (!diseaseResult) {
+    if (farm?.profile) {
       assessRisk();
+    } else {
+      setDiseaseResult(null);
     }
-  }, [farm, selectedCrop]);
+  }, [farm?.profile, selectedCrop]);
 
   const getSpokenText = () => {
     if (!diseaseResult) return '';

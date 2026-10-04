@@ -519,10 +519,12 @@ apiRouter.post('/alerts/:id/dismiss', authenticate, (req: AuthRequest, res: Resp
 // 4.1 Crop Recommendation
 apiRouter.post('/predictions/crop', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    console.log('Crop Prediction Request:', req.body);
     const { farm_id, nitrogen, phosphorus, potassium, ph, temperature, humidity, rainfall } = req.body;
 
     const validation = validateSoilInputs(req.body);
     if (!validation.isValid) {
+      console.log('Validation Error:', validation.error);
       res.status(400).json({ success: false, error: { code: 'VALIDATION_FAILED', message: validation.error } });
       return;
     }

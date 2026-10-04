@@ -51,10 +51,12 @@ export const IrrigationRecommendationView: React.FC<IrrigationRecommendationView
   };
 
   useEffect(() => {
-    if (!irrigationResult) {
+    if (profile) {
       calculateIrrigation();
+    } else {
+      setIrrigationResult(null);
     }
-  }, [farm, selectedCrop]);
+  }, [profile, selectedCrop]);
 
   const getSpokenText = () => {
     if (!irrigationResult) return '';

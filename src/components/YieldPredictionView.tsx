@@ -62,10 +62,12 @@ export const YieldPredictionView: React.FC<YieldPredictionViewProps> = ({
   };
 
   useEffect(() => {
-    if (profile && !yieldResult) {
+    if (profile) {
       calculateYield();
+    } else {
+      setYieldResult(null);
     }
-  }, [farm, selectedCrop]);
+  }, [profile, selectedCrop]);
 
   const getSpokenText = () => {
     if (!yieldResult) return '';

@@ -1,5 +1,6 @@
-// server/services/documentExtractor.ts
-import { GoogleGenAI } from '@google/genai';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const Tesseract = require('tesseract.js');
 
 export interface ExtractedSoilData {
   nitrogen?: number;
@@ -39,65 +40,23 @@ export class DocumentExtractorService {
     const cleanBase64 = fileBufferBase64.replace(/^data:[^;]+;base64,/, '');
     const buffer = Buffer.from(cleanBase64, 'base64');
 
-    // 1. Try local PDF Parsing if it's a PDF
     if (mimeType === 'application/pdf' || fileName.toLowerCase().endsWith('.pdf')) {
       try {
         console.log('[DocumentExtractor] Attempting local PDF text extraction...');
-        const pdfParse = (await import('pdf-parse')).default;
-        const data = await pdfParse(buffer);
+        const { PDFParse } = require('pdf-parse');
+        const parser = new PDFParse({ data: new Uint8Array(buffer) });
+        const data = await parser.getText();
         const text = data.text;
         console.log('[DocumentExtractor] PDF extraction successful, length:', text.length);
 
-        // Simple Regex-based extraction tailored for Soil Health Cards
-        const extractNumber = (regex: RegExp) => {
-          const match = text.match(regex);
-          return match ? parseFloat(match[1]) : null;
-        };
-
-        const nitrogen = extractNumber(/Nitrogen.*?(?:is|:|-)?\s*([\d.]+)/i) ?? extractNumber(/N\s*[:=-]?\s*([\d.]+)/i);
-        const phosphorus = extractNumber(/Phosphorus.*?(?:is|:|-)?\s*([\d.]+)/i) ?? extractNumber(/P\s*[:=-]?\s*([\d.]+)/i);
-        const potassium = extractNumber(/Potassium.*?(?:is|:|-)?\s*([\d.]+)/i) ?? extractNumber(/K\s*[:=-]?\s*([\d.]+)/i);
-        const ph = extractNumber(/pH.*?(?:is|:|-)?\s*([\d.]+)/i);
-        const soil_moisture = extractNumber(/Moisture.*?(?:is|:|-)?\s*([\d.]+)/i);
-        const organic_carbon = extractNumber(/Organic Carbon.*?(?:is|:|-)?\s*([\d.]+)/i) ?? extractNumber(/OC\s*[:=-]?\s*([\d.]+)/i);
-        const electrical_conductivity = extractNumber(/Electrical Conductivity.*?(?:is|:|-)?\s*([\d.]+)/i) ?? extractNumber(/EC\s*[:=-]?\s*([\d.]+)/i);
-        
-        let soil_type = null;
-        if (/(Clay Loam|Black Cotton|Sandy Loam|Alluvial|Red Loam)/i.test(text)) {
-          soil_type = text.match(/(Clay Loam|Black Cotton Soil|Sandy Loam|Alluvial Loam|Red Loam)/i)?.[0];
-        }
-
-        const parsed = {
-          nitrogen,
-          phosphorus,
-          potassium,
-          ph,
-          soil_moisture,
-          organic_carbon,
-          electrical_conductivity,
-          soil_type,
-          lab_name: 'Local PDF Extraction',
-          sample_id: `SHC-${Date.now().toString().slice(-6)}`,
-          test_date: new Date().toISOString().split('T')[0],
-          summary: 'Extracted using deterministic local PDF parser.'
-        };
-
-        // If at least one essential parameter is found, consider it a success
-        if (nitrogen !== null || ph !== null || phosphorus !== null) {
-          console.log('[DocumentExtractor] Local parser found data:', parsed);
-          return this.formatExtractedData(parsed, 'OCR_PARSER', fileName);
-        } else {
-          console.log('[DocumentExtractor] Local parser found no specific data, falling back to pattern matcher');
-        }
+        return this.parseText(text, fileName, 'OCR_PARSER');
       } catch (err) {
         console.error('[DocumentExtractor] Local PDF parser failed:', err);
       }
     }
 
-    // 2. Intelligent Agronomic Pattern Fallback
-    // Decodes base64 text strings or matches realistic Soil Health Card patterns for images/unsupported files
-    console.log('[DocumentExtractor] Using fallback parser');
-    return this.fallbackAgronomicParser(fileBufferBase64, fileName);
+    // If it's an image, or PDF parsing failed, try Tesseract.js (which can read images)
+    return this.extractFromImageOCR(buffer, fileName);
   }
 
   private static formatExtractedData(
@@ -155,19 +114,19 @@ export class DocumentExtractorService {
         key: 'organic_carbon',
         labelEn: 'Organic Carbon (OC)',
         labelTe: 'సేంద్రీయ కర్బనం (OC)',
-        value: oc !== undefined ? `${oc} %` : '0.68 %',
+        value: oc !== undefined ? `${oc} %` : 'Not Available',
         unit: '%',
-        status: 'FOUND',
-        confidence: 0.88,
+        status: oc !== undefined ? 'FOUND' : 'NOT_AVAILABLE',
+        confidence: oc !== undefined ? 0.88 : 0,
       },
       {
         key: 'electrical_conductivity',
         labelEn: 'Electrical Conductivity (EC)',
         labelTe: 'విద్యుత్ వాహకత (EC)',
-        value: ec !== undefined ? `${ec} dS/m` : '0.45 dS/m',
+        value: ec !== undefined ? `${ec} dS/m` : 'Not Available',
         unit: 'dS/m',
-        status: 'FOUND',
-        confidence: 0.85,
+        status: ec !== undefined ? 'FOUND' : 'NOT_AVAILABLE',
+        confidence: ec !== undefined ? 0.85 : 0,
       },
       {
         key: 'soil_type',
@@ -195,8 +154,8 @@ export class DocumentExtractorService {
       potassium: k,
       ph: ph,
       soil_moisture: moisture,
-      organic_carbon: oc ?? 0.68,
-      electrical_conductivity: ec ?? 0.45,
+      organic_carbon: oc,
+      electrical_conductivity: ec,
       soil_type: soilType,
       lab_name: parsed.lab_name || 'District Soil Testing Laboratory (KVK)',
       sample_id: parsed.sample_id || `SHC-${Date.now().toString().slice(-6)}`,
@@ -208,68 +167,56 @@ export class DocumentExtractorService {
   }
 
   /**
-   * Fallback parser that reads text tokens or provides authentic benchmark values
-   * representing standard Indian Soil Health Cards (Warangal, Guntur, Ludhiana).
+   * Fallback parser for images using Tesseract.js (or returning undefined if not an image).
+   * We no longer use hardcoded benchmark values (like N=245) to prevent stale/fake data bugs.
    */
-  private static fallbackAgronomicParser(base64Data: string, fileName: string): ExtractedSoilData {
-    // Check if filename indicates a regional profile or use balanced Warangal/Telangana ICAR card benchmark
-    const lowerName = (fileName || '').toLowerCase();
+  private static async extractFromImageOCR(buffer: Buffer, fileName: string): Promise<ExtractedSoilData> {
+    try {
+      console.log('[DocumentExtractor] Attempting Tesseract.js OCR for image...');
+      const { data: { text } } = await Tesseract.recognize(buffer, 'eng');
+      console.log('[DocumentExtractor] OCR extraction successful, length:', text.length);
 
-    let n = 245;
-    let p = 18;
-    let k = 210;
-    let ph = 6.8;
-    let oc = 0.72;
-    let ec = 0.42;
-    let soilType = 'Clay Loam';
-    let lab = 'Regional Agricultural Research Station (RARS), Warangal';
+      return this.parseText(text, fileName, 'OCR_PARSER');
+    } catch (err) {
+      console.error('[DocumentExtractor] Tesseract OCR failed:', err);
+      // Return empty if completely failed, do NOT return fake data
+      return this.formatExtractedData({}, 'OCR_PARSER', fileName);
+    }
+  }
 
-    if (lowerName.includes('black') || lowerName.includes('cotton') || lowerName.includes('deccan')) {
-      n = 115;
-      p = 14;
-      k = 280;
-      ph = 7.8;
-      oc = 0.55;
-      ec = 0.68;
-      soilType = 'Black Cotton Soil';
-      lab = 'District Soil Testing Center, Adilabad';
-    } else if (lowerName.includes('alluvial') || lowerName.includes('punjab') || lowerName.includes('north')) {
-      n = 280;
-      p = 22;
-      k = 195;
-      ph = 7.2;
-      oc = 0.62;
-      ec = 0.38;
-      soilType = 'Alluvial Loam';
-      lab = 'Punjab Agricultural University Extension Lab, Ludhiana';
-    } else if (lowerName.includes('red') || lowerName.includes('sandy')) {
-      n = 180;
-      p = 12;
-      k = 160;
-      ph = 6.2;
-      oc = 0.48;
-      ec = 0.25;
-      soilType = 'Red Sandy Loam';
-      lab = 'Krishi Vigyan Kendra (KVK), Mahabubnagar';
+  private static parseText(text: string, fileName: string, source: 'OCR_GEMINI' | 'OCR_PARSER'): ExtractedSoilData {
+    const extractNumber = (regex: RegExp) => {
+      const match = text.match(regex);
+      return match ? parseFloat(match[1]) : null;
+    };
+
+    // Improved Regex to catch more variations (e.g., "Available N (kg/ha) : 120", or just "Available Nitrogen 198")
+    const nitrogen = extractNumber(/Nitrogen(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bN\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
+    const phosphorus = extractNumber(/Phosphorus(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bP\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
+    const potassium = extractNumber(/Potassium(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bK\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
+    const ph = extractNumber(/pH(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i);
+    const soil_moisture = extractNumber(/Moisture(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i);
+    const organic_carbon = extractNumber(/Organic Carbon(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bOC\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
+    const electrical_conductivity = extractNumber(/Electrical Conductivity(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bEC\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
+    
+    let soil_type = undefined;
+    if (/(Clay Loam|Black Cotton|Sandy Loam|Alluvial|Red Loam|Sandy|Loam|Clay|Silt)/i.test(text)) {
+      soil_type = text.match(/(Clay Loam|Black Cotton Soil|Sandy Loam|Alluvial Loam|Red Loam|Sandy|Loam|Clay|Silt)/i)?.[0];
     }
 
-    return this.formatExtractedData(
-      {
-        nitrogen: n,
-        phosphorus: p,
-        potassium: k,
-        ph: ph,
-        soil_moisture: 45, // Set to 45% (Field Capacity) instead of null so all 6 features work even if Gemini API is down
-        organic_carbon: oc,
-        electrical_conductivity: ec,
-        soil_type: soilType,
-        lab_name: lab,
-        sample_id: `SHC-2026-${Math.floor(100000 + Math.random() * 900000)}`,
-        test_date: new Date().toISOString().split('T')[0],
-        summary: `Document processed successfully from ${fileName}. Primary macro-nutrients and chemical properties extracted.`,
-      },
-      'OCR_PARSER',
-      fileName
-    );
+    return this.formatExtractedData({
+      nitrogen,
+      phosphorus,
+      potassium,
+      ph,
+      soil_moisture,
+      organic_carbon,
+      electrical_conductivity,
+      soil_type,
+      lab_name: 'Local Parser',
+      sample_id: `SHC-${Date.now().toString().slice(-6)}`,
+      test_date: new Date().toISOString().split('T')[0],
+      summary: 'Extracted using local text parser.'
+    }, source, fileName);
   }
 }

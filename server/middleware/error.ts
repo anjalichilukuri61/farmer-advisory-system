@@ -21,14 +21,14 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
 export function validateSoilInputs(data: any): { isValid: boolean; error?: string } {
   const { nitrogen, phosphorus, potassium, ph, rainfall, temperature, humidity } = data;
 
-  if (nitrogen !== undefined && (isNaN(nitrogen) || nitrogen < 0 || nitrogen > 300)) {
-    return { isValid: false, error: 'Nitrogen (N) must be between 0 and 300 kg/ha.' };
+  if (nitrogen !== undefined && (isNaN(nitrogen) || nitrogen < 0 || nitrogen > 1500)) {
+    return { isValid: false, error: 'Nitrogen (N) must be between 0 and 1500 kg/ha.' };
   }
-  if (phosphorus !== undefined && (isNaN(phosphorus) || phosphorus < 0 || phosphorus > 250)) {
-    return { isValid: false, error: 'Phosphorus (P) must be between 0 and 250 kg/ha.' };
+  if (phosphorus !== undefined && (isNaN(phosphorus) || phosphorus < 0 || phosphorus > 1000)) {
+    return { isValid: false, error: 'Phosphorus (P) must be between 0 and 1000 kg/ha.' };
   }
-  if (potassium !== undefined && (isNaN(potassium) || potassium < 0 || potassium > 300)) {
-    return { isValid: false, error: 'Potassium (K) must be between 0 and 300 kg/ha.' };
+  if (potassium !== undefined && (isNaN(potassium) || potassium < 0 || potassium > 2000)) {
+    return { isValid: false, error: 'Potassium (K) must be between 0 and 2000 kg/ha.' };
   }
   if (ph !== undefined && (isNaN(ph) || ph < 3.0 || ph > 10.0)) {
     return { isValid: false, error: 'Soil pH must be between 3.0 and 10.0 (acidic to alkaline range).' };

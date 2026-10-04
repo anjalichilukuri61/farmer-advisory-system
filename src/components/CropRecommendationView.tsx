@@ -39,7 +39,7 @@ export const CropRecommendationView: React.FC<CropRecommendationViewProps> = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await api.predictCrop({
+      const payload = {
         farm_id: farm?.id,
         nitrogen: profile.nitrogen ?? 78,
         phosphorus: profile.phosphorus ?? 45,
@@ -48,23 +48,28 @@ export const CropRecommendationView: React.FC<CropRecommendationViewProps> = ({
         temperature: weather?.current.temperature ?? 28,
         humidity: weather?.current.humidity ?? 65,
         rainfall: (weather?.current.rainfallMm ?? 10) > 0 ? (weather?.current.rainfallMm ?? 10) * 10 : 120,
-      });
+      };
+      console.log('Crop Prediction Payload:', payload);
+      const res = await api.predictCrop(payload);
 
       setRecommendation(res.result);
       setExplanation(res.explanation);
     } catch (err: any) {
-      setError(err.message || 'Failed to generate crop recommendation.');
+      setError(`Crop prediction could not be generated.\n\nReason: ${err.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Run automatically on first load if profile exists
+  // Run automatically when profile changes (e.g. after a new soil report upload)
   useEffect(() => {
-    if (profile && !recommendation) {
+    if (profile) {
       runAnalysis();
+    } else {
+      setRecommendation(null);
+      setExplanation(null);
     }
-  }, [farm]);
+  }, [profile]);
 
   const getSpokenText = () => {
     if (!recommendation) return '';

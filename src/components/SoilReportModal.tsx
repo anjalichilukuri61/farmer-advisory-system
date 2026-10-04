@@ -43,14 +43,14 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
   const [extractedData, setExtractedData] = useState<any>(null);
 
   // Editable parameters
-  const [nitrogen, setNitrogen] = useState<number>(245);
-  const [phosphorus, setPhosphorus] = useState<number>(18);
-  const [potassium, setPotassium] = useState<number>(210);
-  const [ph, setPh] = useState<number>(6.8);
+  const [nitrogen, setNitrogen] = useState<number | ''>('');
+  const [phosphorus, setPhosphorus] = useState<number | ''>('');
+  const [potassium, setPotassium] = useState<number | ''>('');
+  const [ph, setPh] = useState<number | ''>('');
   const [soilType, setSoilType] = useState<string>('Clay Loam');
-  const [soilMoisture, setSoilMoisture] = useState<number>(40);
-  const [organicCarbon, setOrganicCarbon] = useState<number>(0.72);
-  const [electricalConductivity, setElectricalConductivity] = useState<number>(0.42);
+  const [soilMoisture, setSoilMoisture] = useState<number | ''>('');
+  const [organicCarbon, setOrganicCarbon] = useState<number | ''>('');
+  const [electricalConductivity, setElectricalConductivity] = useState<number | ''>('');
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,6 +63,11 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
     setLoading(true);
     setStep('EXTRACTING');
     setFileName(file.name);
+    setExtractedData(null);
+    setNitrogen('');
+    setPhosphorus('');
+    setPotassium('');
+    setPh('');
 
     try {
       const reader = new FileReader();
@@ -136,16 +141,14 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
     setReportId(repId);
     setFileName(name);
 
-    if (data.nitrogen !== undefined) setNitrogen(Number(data.nitrogen));
-    if (data.phosphorus !== undefined) setPhosphorus(Number(data.phosphorus));
-    if (data.potassium !== undefined) setPotassium(Number(data.potassium));
-    if (data.ph !== undefined) setPh(Number(data.ph));
-    if (data.soil_type) setSoilType(data.soil_type);
-    if (data.soil_moisture !== undefined && data.soil_moisture !== null) {
-      setSoilMoisture(Number(data.soil_moisture));
-    }
-    if (data.organic_carbon !== undefined) setOrganicCarbon(Number(data.organic_carbon));
-    if (data.electrical_conductivity !== undefined) setElectricalConductivity(Number(data.electrical_conductivity));
+    setNitrogen(data.nitrogen !== undefined && data.nitrogen !== null ? Number(data.nitrogen) : '');
+    setPhosphorus(data.phosphorus !== undefined && data.phosphorus !== null ? Number(data.phosphorus) : '');
+    setPotassium(data.potassium !== undefined && data.potassium !== null ? Number(data.potassium) : '');
+    setPh(data.ph !== undefined && data.ph !== null ? Number(data.ph) : '');
+    setSoilType(data.soil_type || 'Clay Loam');
+    setSoilMoisture(data.soil_moisture !== undefined && data.soil_moisture !== null ? Number(data.soil_moisture) : '');
+    setOrganicCarbon(data.organic_carbon !== undefined && data.organic_carbon !== null ? Number(data.organic_carbon) : '');
+    setElectricalConductivity(data.electrical_conductivity !== undefined && data.electrical_conductivity !== null ? Number(data.electrical_conductivity) : '');
   };
 
   const handleConfirm = async () => {
@@ -386,19 +389,27 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
                           <input
                             type="number"
                             value={nitrogen}
-                            onChange={e => setNitrogen(Number(e.target.value))}
+                            onChange={e => setNitrogen(e.target.value ? Number(e.target.value) : '')}
                             className="w-24 px-2 py-1 border border-stone-300 rounded text-xs font-bold"
                           />
                           <span className="text-stone-500">kg/ha</span>
                         </div>
                       ) : (
-                        <span className="font-extrabold text-stone-900">{nitrogen} kg/ha</span>
+                        <span className="font-extrabold text-stone-900">
+                          {nitrogen !== '' ? `${nitrogen} kg/ha` : <span className="text-amber-600">Not Found</span>}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
-                        {t.soilReport.found}
-                      </span>
+                      {nitrogen !== '' ? (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                          {t.soilReport.found}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900">
+                          Not Available
+                        </span>
+                      )}
                     </td>
                   </tr>
 
@@ -413,19 +424,27 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
                           <input
                             type="number"
                             value={phosphorus}
-                            onChange={e => setPhosphorus(Number(e.target.value))}
+                            onChange={e => setPhosphorus(e.target.value ? Number(e.target.value) : '')}
                             className="w-24 px-2 py-1 border border-stone-300 rounded text-xs font-bold"
                           />
                           <span className="text-stone-500">kg/ha</span>
                         </div>
                       ) : (
-                        <span className="font-extrabold text-stone-900">{phosphorus} kg/ha</span>
+                        <span className="font-extrabold text-stone-900">
+                          {phosphorus !== '' ? `${phosphorus} kg/ha` : <span className="text-amber-600">Not Found</span>}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
-                        {t.soilReport.found}
-                      </span>
+                      {phosphorus !== '' ? (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                          {t.soilReport.found}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900">
+                          Not Available
+                        </span>
+                      )}
                     </td>
                   </tr>
 
@@ -440,19 +459,27 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
                           <input
                             type="number"
                             value={potassium}
-                            onChange={e => setPotassium(Number(e.target.value))}
+                            onChange={e => setPotassium(e.target.value ? Number(e.target.value) : '')}
                             className="w-24 px-2 py-1 border border-stone-300 rounded text-xs font-bold"
                           />
                           <span className="text-stone-500">kg/ha</span>
                         </div>
                       ) : (
-                        <span className="font-extrabold text-stone-900">{potassium} kg/ha</span>
+                        <span className="font-extrabold text-stone-900">
+                          {potassium !== '' ? `${potassium} kg/ha` : <span className="text-amber-600">Not Found</span>}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
-                        {t.soilReport.found}
-                      </span>
+                      {potassium !== '' ? (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                          {t.soilReport.found}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900">
+                          Not Available
+                        </span>
+                      )}
                     </td>
                   </tr>
 
@@ -468,18 +495,26 @@ export const SoilReportModal: React.FC<SoilReportModalProps> = ({
                             type="number"
                             step="0.1"
                             value={ph}
-                            onChange={e => setPh(Number(e.target.value))}
+                            onChange={e => setPh(e.target.value ? Number(e.target.value) : '')}
                             className="w-24 px-2 py-1 border border-stone-300 rounded text-xs font-bold"
                           />
                         </div>
                       ) : (
-                        <span className="font-extrabold text-stone-900">{ph}</span>
+                        <span className="font-extrabold text-stone-900">
+                          {ph !== '' ? ph : <span className="text-amber-600">Not Found</span>}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
-                        {t.soilReport.found}
-                      </span>
+                      {ph !== '' ? (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                          {t.soilReport.found}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900">
+                          Not Available
+                        </span>
+                      )}
                     </td>
                   </tr>
 
