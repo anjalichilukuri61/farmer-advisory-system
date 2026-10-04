@@ -193,17 +193,32 @@ export class DocumentExtractorService {
   private static parseText(text: string, fileName: string, source: 'OCR_GEMINI' | 'OCR_PARSER'): ExtractedSoilData {
     const extractNumber = (regex: RegExp) => {
       const match = text.match(regex);
-      return match ? parseFloat(match[1]) : null;
+      if (match && match[1]) {
+        const val = parseFloat(match[1]);
+        if (!isNaN(val)) return val;
+      }
+      return null;
     };
 
-    // Improved Regex to catch more variations (e.g., "Available N (kg/ha) : 120", or just "Available Nitrogen 198")
-    const nitrogen = extractNumber(/Nitrogen(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bN\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
-    const phosphorus = extractNumber(/Phosphorus(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bP\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
-    const potassium = extractNumber(/Potassium(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bK\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
-    const ph = extractNumber(/pH(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i);
-    const soil_moisture = extractNumber(/Moisture(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i);
-    const organic_carbon = extractNumber(/Organic Carbon(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bOC\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
-    const electrical_conductivity = extractNumber(/Electrical Conductivity(?:[\s\w()]*?)[:=-]?\s*([\d.]+)/i) ?? extractNumber(/\bEC\b(?:[\s()]*?)[:=-]?\s*([\d.]+)/i);
+    // Improved strict single-line regexes
+    const nitrogen = extractNumber(/(?:Available\s+)?Nitrogen(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i) ?? extractNumber(/\bN\b(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    const phosphorus = extractNumber(/(?:Available\s+)?Phosphorus(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i) ?? extractNumber(/\bP\b(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    const potassium = extractNumber(/(?:Available\s+)?Potassium(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i) ?? extractNumber(/\bK\b(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    const ph = extractNumber(/(?:Soil\s+)?(?:Reaction|pH)(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    const soil_moisture = extractNumber(/Moisture(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    const organic_carbon = extractNumber(/Organic\s+(?:Matter\s+)?Carbon(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i) ?? extractNumber(/\bO\.?C\.?\b(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    const electrical_conductivity = extractNumber(/Electrical\s+Conductivity(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i) ?? extractNumber(/\bE\.?C\.?\b(?:[^\r\n\d:]*?)[:=-]?\s*(\d+(?:\.\d+)?)/i);
+    
+    console.log(`\n========== SOIL REPORT EXTRACTION ==========`);
+    console.log(`File: ${fileName}`);
+    console.log(`DETECTED PARAMETERS:\n`);
+    console.log(`pH → ${ph}`);
+    console.log(`EC → ${electrical_conductivity}`);
+    console.log(`Organic Carbon → ${organic_carbon}`);
+    console.log(`Nitrogen → ${nitrogen}`);
+    console.log(`Phosphorus → ${phosphorus}`);
+    console.log(`Potassium → ${potassium}`);
+    console.log(`==============================================\n`);
     
     let soil_type = undefined;
     if (/(Clay Loam|Black Cotton|Sandy Loam|Alluvial|Red Loam|Sandy|Loam|Clay|Silt)/i.test(text)) {
